@@ -2,4 +2,12 @@
 <resources>
     <string name="Greeting">НМедиа!</string>
     <string name="app_name">НМедиа</string>
+    <string name="exampleTextTitleOfPost">Нетология</string>
+    <string name="exampleTextPostDate">вчера в 16:08</string>
+    <string name="moreButtonDescription">Меню поста</string>
+    <string name="Avatar">Аватар</string>
+    <string name="likesDescription">Лайки</string>
+    <string name="commentDescription">Комментарии</string>
+    <string name="shareDescription">Поделиться</string>
+    <string name="viewDescription">Просмотры</string>
 </resources>
