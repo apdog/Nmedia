@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="4dp"
+    app:cardCornerRadius="@dimen/post_corner_radius_20dp"
+    app:cardElevation="@dimen/post_elevation_4dp"
     android:id="@+id/post_card_view">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,9 +15,9 @@
 
         <ImageButton
             android:id="@+id/more_button"
-            android:layout_width="48dp"
+            android:layout_width="@dimen/weight_of_post_additional_menu_48dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="@dimen/margin_of_button_4dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/moreButtonDescription"
             android:src="@drawable/ic_more_dote_24"
@@ -27,11 +27,11 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/avatar_card_view"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="45dp"
+            android:layout_width="@dimen/size_of_post_avatar_80dp"
+            android:layout_height="@dimen/size_of_post_avatar_80dp"
+            android:layout_marginStart="@dimen/out_post_right_and_left_margin_20dp"
+            android:layout_marginTop="@dimen/top_post_margin_12dp"
+            app:cardCornerRadius="@dimen/post_avatar_corner_45dp"
             app:cardElevation="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -49,8 +49,8 @@
             android:id="@+id/post_info_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginStart="@dimen/post_info_margin_12dp"
+            android:layout_marginEnd="@dimen/post_info_margin_12dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/avatar_card_view"
             app:layout_constraintEnd_toStartOf="@+id/more_button"
@@ -61,11 +61,11 @@
                 android:id="@+id/post_title_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="@dimen/bottom_margin_of_title_post_4dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/exampleTextTitleOfPost"
-                android:textSize="16sp"
+                tools:text="@string/exampleTextTitleOfPost"
+                android:textSize="@dimen/size_of_post_text_16sp"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="96dp"
                 tools:layout_editor_absoluteY="45dp" />
@@ -78,10 +78,8 @@
                 android:maxLines="1"
                 android:text="@string/exampleTextPostDate"
                 android:textColor="@color/grey"
-                android:textSize="16sp"
-                android:textStyle="normal"
-                tools:layout_editor_absoluteX="96dp"
-                tools:layout_editor_absoluteY="71dp" />
+                android:textSize="@dimen/size_of_post_text_16sp"
+                android:textStyle="normal"/>
 
         </LinearLayout>
 
@@ -89,13 +87,13 @@
             android:id="@+id/post_content_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="@dimen/start_and_end_post_content_margin_20dp"
+            android:layout_marginTop="@dimen/top_post_margin_12dp"
+            android:layout_marginEnd="@dimen/start_and_end_post_content_margin_20dp"
             android:ellipsize="end"
             android:maxLines="10"
-            android:text="@string/exampleTextOfPost"
-            android:textSize="16sp"
+            tools:text="@string/exampleTextOfPost"
+            android:textSize="@dimen/size_of_post_text_16sp"
             android:textStyle="normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,10 +103,10 @@
             android:id="@+id/main_action_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginStart="@dimen/start_and_end_margin_action_panel_20dp"
+            android:layout_marginTop="@dimen/top_and_bottom_margin_of_action_panel_12dp"
+            android:layout_marginEnd="@dimen/start_and_end_margin_action_panel_20dp"
+            android:layout_marginBottom="@dimen/top_and_bottom_margin_of_action_panel_12dp"
             android:baselineAligned="false"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -118,105 +116,104 @@
 
             <LinearLayout
                 android:id="@+id/space_for_likes"
-                android:layout_width="80dp"
+                android:layout_width="@dimen/height_of_part_action_panel_80dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:id="@+id/like_image_view"
+                    android:id="@+id/post_likes_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/margin_inside_action_panel_8dp"
                     android:contentDescription="@string/likesDescription"
-                    android:src="@drawable/ic_favorite_24" />
+                    android:src="@drawable/ic_like_border_24" />
 
                 <TextView
-                    android:id="@+id/like_count_text_view"
+                    android:id="@+id/post_likes_count_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/defaultCounter_0"
                     android:textColor="@color/grey"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/size_of_action_panel_text_14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/space_for_comments"
-                android:layout_width="80dp"
+                android:layout_width="@dimen/height_of_part_action_panel_80dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:id="@+id/comments_image_view"
+                    android:id="@+id/post_comments_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/margin_inside_action_panel_8dp"
                     android:contentDescription="@string/commentDescription"
                     android:src="@drawable/ic_comment_24" />
 
                 <TextView
-                    android:id="@+id/comments_count_text_view"
+                    android:id="@+id/post_comments_count_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/defaultCounter_0"
                     android:textColor="@color/grey"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/size_of_action_panel_text_14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/space_for_share"
-                android:layout_width="80dp"
+                android:layout_width="@dimen/height_of_part_action_panel_80dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
-                    android:id="@+id/share_image_view"
+                    android:id="@+id/post_share_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/margin_inside_action_panel_8dp"
                     android:contentDescription="@string/shareDescription"
                     android:rotationY="180"
                     android:src="@drawable/ic_share_24" />
 
                 <TextView
-                    android:id="@+id/share_text_view"
+                    android:id="@+id/post_share_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/defaultCounter_0"
                     android:textColor="@color/grey"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/size_of_action_panel_text_14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/space_for_views"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity=""
                 android:layout_weight="1"
                 android:gravity="right|center_vertical"
                 android:orientation="horizontal"
                 tools:ignore="RtlHardcoded,UseCompoundDrawables">
 
                 <ImageView
-                    android:id="@+id/views_image_view"
+                    android:id="@+id/post_views_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="@dimen/margin_inside_action_panel_8dp"
                     android:contentDescription="@string/viewDescription"
                     android:src="@drawable/ic_view_24" />
 
                 <TextView
-                    android:id="@+id/views_text_view"
+                    android:id="@+id/post_views_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/defaultCounter_0"
                     android:textColor="@color/grey"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/size_of_action_panel_text_14sp" />
             </LinearLayout>
 
         </LinearLayout>
