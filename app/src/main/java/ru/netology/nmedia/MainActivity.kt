@@ -38,7 +38,14 @@ class MainActivity : AppCompatActivity() {
         )
 
         with(binding) {
+
             val post = WallService.getPostById(1)
+            //обновления счетчиков при первоначальной загрузке приложения
+            postLikesCountTextView.text = WallService.formatCount(post?.likes?.count ?: 0)
+            postShareTextView.text = WallService.formatCount(post?.reposts?.count ?: 0)
+            postViewsTextView.text = WallService.formatCount(post?.views?.count ?: 0)
+            postCommentsCountTextView.text = post?.comments?.size.toString()
+            //присвоение текстовой инфы посту
             postTitleTextView.text = post?.title
             postContentTextView.text = post?.text
             postDateTextView.text = WallService.formatPostDate(post?.date, applicationContext)
@@ -53,6 +60,14 @@ class MainActivity : AppCompatActivity() {
             if (post!!.likedByMe) {
                 postLikesImageView.setImageResource(R.drawable.ic_like_border_24)
             }
+
+//            root.setOnClickListener {
+//
+//            }
+
+//            avatarImageView.setOnClickListener {
+
+//            }
 
             postLikesImageView.setOnClickListener {
                 WallService.likePost(post)
@@ -73,6 +88,5 @@ class MainActivity : AppCompatActivity() {
                     post.views?.count?.let { WallService.formatCount(it) }
             }
         }
-
     }
 }

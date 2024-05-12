@@ -149,7 +149,7 @@ object WallService {
         if (post.reposts == null) {
             post.reposts = Reposts(count = 1, userReposted = true)
         } else {
-            post.reposts?.count = post.reposts?.count?.plus(100000) ?: 0
+            post.reposts?.count = post.reposts?.count?.plus(1597) ?: 0
         }
         return post
     }
@@ -157,10 +157,9 @@ object WallService {
     fun formatCount(count: Int): String {
         return when {
             count < 1000 -> count.toString()
-            count < 1100 -> "1 K"
-            count < 10000 -> (count / 1000).toString() + " K"
-            count < 1_000_000 -> String.format("%.1f K", count / 1000.0)
-            else -> String.format("%.1f M", count / 1_000_000.0)
+            count < 10_000 -> "${(count / 1000.0 * 10).toInt() / 10.0}K"
+            count < 1_000_000 -> "${(count / 1000)}K"
+            else -> "${(count / 1_000_000.0 * 10).toInt() / 10.0}M"
         }
     }
 
