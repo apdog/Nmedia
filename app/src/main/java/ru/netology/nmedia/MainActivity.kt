@@ -61,17 +61,9 @@ class MainActivity : AppCompatActivity() {
                 postLikesImageView.setImageResource(R.drawable.ic_like_border_24)
             }
 
-//            root.setOnClickListener {
-//
-//            }
-
-//            avatarImageView.setOnClickListener {
-
-//            }
-
             postLikesImageView.setOnClickListener {
                 WallService.likePost(post)
-                postLikesCountTextView.text = post.likes?.count.toString()
+                postLikesCountTextView.text = post.likes?.count?.let { WallService.formatCount(it)}
                 postLikesImageView.setImageResource(
                     if (post.likedByMe) R.drawable.ic_filled_like_24
                     else R.drawable.ic_like_border_24
