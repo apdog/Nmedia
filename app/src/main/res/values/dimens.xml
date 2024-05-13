@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <dimen name="size_of_action_panel_text_14sp">14sp</dimen>
+    <dimen name="margin_inside_action_panel_8dp">8dp</dimen>
+    <dimen name="height_of_part_action_panel_80dp">80dp</dimen>
+    <dimen name="post_corner_radius_20dp">20dp</dimen>
+    <dimen name="post_elevation_4dp">4dp</dimen>
+    <dimen name="weight_of_post_additional_menu_48dp">48dp</dimen>
+    <dimen name="margin_of_button_4dp">4dp</dimen>
+    <dimen name="size_of_post_avatar_80dp">80dp</dimen>
+    <dimen name="out_post_right_and_left_margin_20dp">20dp</dimen>
+    <dimen name="top_post_margin_12dp">12dp</dimen>
+    <dimen name="post_avatar_corner_45dp">45dp</dimen>
+    <dimen name="post_info_margin_12dp">12dp</dimen>
+    <dimen name="bottom_margin_of_title_post_4dp">4dp</dimen>
+    <dimen name="size_of_post_text_16sp">16sp</dimen>
+    <dimen name="start_and_end_post_content_margin_20dp">20dp</dimen>
+    <dimen name="start_and_end_margin_action_panel_20dp">20dp</dimen>
+    <dimen name="top_and_bottom_margin_of_action_panel_12dp">12dp</dimen>
 </resources>
