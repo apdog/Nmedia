@@ -1,4 +1,4 @@
-package ru.netology.nmedia.post.attachments
+package ru.netology.nmedia.domain.post.attachments
 
 import java.util.*
 

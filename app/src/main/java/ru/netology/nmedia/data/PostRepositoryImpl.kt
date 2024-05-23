@@ -1,55 +1,72 @@
-package ru.netology.nmedia.post
+package ru.netology.nmedia.data
 
 import android.content.Context
 import androidx.core.content.ContextCompat.getString
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.R
+import ru.netology.nmedia.domain.post.Comments
+import ru.netology.nmedia.domain.post.Likes
+import ru.netology.nmedia.domain.post.Post
+import ru.netology.nmedia.domain.post.PostNotFoundException
+import ru.netology.nmedia.domain.post.Reposts
+import ru.netology.nmedia.domain.post.Views
+import ru.netology.nmedia.domain.PostRepository
 import java.util.Date
 
-//сервис отвечающий за публикацию постов
-object WallService {
+object PostRepositoryImpl : PostRepository {
 
-    private var posts = emptyArray<Post>()
-    private var comments = emptyArray<Comments>()
+    private var posts = mutableListOf<Post>()
+    private var comments = mutableListOf<Comments>()
 
     // Переменная для хранения текущего идентификатора поста
     private var startPostsId = 1
     private var startCommentsId = 0
+
     //метод для создания постов
 
     //Как он должен работать:
     //добавлять запись в массив, но при этом назначать посту уникальный среди всех постов идентификатор;
     //возвращать пост с уже выставленным идентификатором.
-    fun add(post: Post): Post {
-        val newPost = post.copy(id = startPostsId++)
-        // Инициализируем пустой список комментариев для нового поста
-        newPost.comments = mutableListOf()
+    override fun add(post: Post): LiveData<Post> {
+        //Создание копии поста с новым ID и инициализацией пустого списка комментариев
+        val newPost = post.copy(id = startPostsId++, comments = mutableListOf())
+        //Добавление нового поста в список
         posts += newPost
-        return newPost
+        //Создание и возврат LiveData<Post>
+        val result = MutableLiveData<Post>()
+        result.value = newPost
+        return result
     }
 
     //метод для обновления постов
-
     //Как он должен работать:
     //находить среди всех постов запись с тем же id, что и у post и обновлять все свойства;
-    //если пост с таким id не найден, то ничего не происходит и возвращается false, в противном случае – возвращается true.
-    fun update(post: Post): Boolean {
+    //если пост с таким id не найден, то ничего не происходит и возвращается false,
+    // в противном случае – возвращается true.
+    override fun update(post: Post): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
         val index = posts.indexOfFirst { it.id == post.id }
-        return if (index != -1) {
+        if (index != -1) {
             // Создаем копию обновленного поста
             val updatedPost = post.copy()
             // Заменяем старый пост на обновленный
             posts[index] = updatedPost
-            true
+            result.value = true // Операция обновления выполнена успешно
         } else {
-            false
+            result.value = false // Пост с указанным ID не найден, операция не выполнена
         }
+        return result
     }
 
-    fun getPostById(postId: Int): Post? {
-        return posts.find { it.id == postId }
+    override fun getPostById(postId: Int): LiveData<Post?> {
+        val result = MutableLiveData<Post?>()
+        result.value = posts.find { it.id == postId }
+        return result
     }
 
-    fun createComment(postId: Int, comment: Comments): Comments {
+    override fun createComment(postId: Int, comment: Comments): LiveData<Comments> {
+        val result = MutableLiveData<Comments>()
         // проверка существует ли в массиве posts пост с ID равным postId
         val postIndex = posts.indexOfFirst { it.id == postId }
         if (postIndex != -1) {
@@ -57,19 +74,20 @@ object WallService {
             val newComment = comment.copy(id = posts[postIndex].comments?.size?.plus(1) ?: 0)
             comments += newComment
             posts[postIndex].comments?.add(newComment)
-            return newComment
+            result.value = newComment
         } else {
             throw PostNotFoundException("Пост с ID $postId не найден")
         }
+        return result
     }
 
-    fun clearPosts() {
-        posts = emptyArray()
+    override fun clearPosts() {
+        posts = mutableListOf()
         startPostsId = 0
     }
 
-    fun clearComments() {
-        comments = emptyArray()
+    override fun clearComments() {
+        comments = mutableListOf()
         startCommentsId = 0
     }
 
@@ -86,7 +104,7 @@ object WallService {
         }
     }
 
-    fun formatPostDate(date: Date?, context: Context): String {
+    override fun formatPostDate(date: Date?, context: Context): String {
         if (date == null) return getString(context, R.string.unavailable)
         val now = Date()
         val seconds = (now.time - date.time) / 1000
@@ -135,26 +153,40 @@ object WallService {
         }
     }
 
-    fun likePost(post: Post): Post {
-        post.likedByMe = !post.likedByMe
-        if (post.likes == null) {
-            post.likes = Likes(count = 1, userLikes = 0, canLike = true)
-        } else {
-            post.likes?.count = post.likes?.count?.plus(if (post.likedByMe) 1 else -1) ?: 0
+    override fun likePost(post: Post): LiveData<Post> {
+        val result = MutableLiveData<Post>()
+        val index = posts.indexOfFirst { it.id == post.id }
+        if (index != -1) {
+            val updatedPost = post.copy(
+                likedByMe = !post.likedByMe,
+                likes = if (post.likes == null) {
+                    Likes(count = 1, userLikes = 0, canLike = true)
+                } else {
+                    Likes(count = post.likes.count + if (post.likedByMe) -1 else 1, userLikes = post.likes.userLikes, canLike = true)
+                }
+            )
+            posts[index] = updatedPost
+            result.value = updatedPost
         }
-        return post
+        return result
     }
 
-    fun sharePost(post: Post): Post {
-        if (post.reposts == null) {
-            post.reposts = Reposts(count = 1, userReposted = true)
-        } else {
-            post.reposts?.count = post.reposts?.count?.plus(1597) ?: 0
+    override fun sharePost(post: Post): LiveData<Post> {
+        val result = MutableLiveData<Post>()
+        val index = posts.indexOfFirst { it.id == post.id }
+        if (index != -1) {
+            val updatedPost = post.copy(
+                reposts = Reposts(count = post.reposts?.count?.plus(1) ?: 1, userReposted = true),
+                // временно, пока не пойму как сделать это через активити
+                views = Views(count = post.views?.count?.plus(1) ?: 1)
+            )
+            posts[index] = updatedPost
+            result.value = updatedPost
         }
-        return post
+        return result
     }
 
-    fun formatCount(count: Int): String {
+    override fun formatCount(count: Int): String {
         return when {
             count < 1000 -> count.toString()
             count < 10_000 -> "${(count / 1000.0 * 10).toInt() / 10.0}K"
@@ -163,13 +195,17 @@ object WallService {
         }
     }
 
-    fun plusView(post: Post): Post {
-        if (post.views == null) {
-            post.views = Views(count = 1)
-        } else {
-            post.views?.count = post.views?.count?.plus(100000) ?: 0
+    override fun plusView(post: Post): LiveData<Post> {
+        val result = MutableLiveData<Post>()
+        val index = posts.indexOfFirst { it.id == post.id }
+        if (index != -1) {
+            val updatedPost = post.copy(
+                views = Views(count = post.views?.count?.plus(1) ?: 1)
+            )
+            posts[index] = updatedPost
+            result.value = updatedPost
         }
-        return post
+        return result
     }
 
 }
