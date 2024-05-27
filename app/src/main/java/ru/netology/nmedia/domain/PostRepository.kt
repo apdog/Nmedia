@@ -7,10 +7,11 @@ import ru.netology.nmedia.domain.post.Post
 import java.util.Date
 
 interface PostRepository {
+    fun get(): LiveData<Post>
     fun add(post: Post): LiveData<Post>
     fun update(post: Post): LiveData<Boolean>
-    fun getPostById(postId: Int): LiveData<Post?>
-    fun createComment(postId: Int, comment: Comments): LiveData<Comments>
+
+    // fun createComment(postId: Int, comment: Comments): LiveData<Comments>
     fun clearPosts()
     fun clearComments()
     fun formatPostDate(date: Date?, context: Context): String

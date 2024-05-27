@@ -23,6 +23,25 @@ object PostRepositoryImpl : PostRepository {
     private var startPostsId = 1
     private var startCommentsId = 0
 
+    // Создание новой даты для поста приват
+    val newDate = Date(System.currentTimeMillis() - (360 * 60 * 1000))
+    private var post = Post(
+        id = 0, fromId = 0, date = newDate,
+        title = "Нетология",
+        text = "Нейросети восстанут против дизайнеров? Сомнительно, хоть это и пугает. Чтобы избавиться от страха, превратите их в союзников. Предлагаем открыть Midjourney и пошагово сгенерировать изображение по инструкции от Андрея Малеваника, автора и преподавателя курса «Нейросети для дизайна».Смотрите подробности о курсе и записывайтесь на бесплатную консультацию по программе обучения: https://netolo.gy/c8Mg",
+        friendsOnly = false,
+        comments = null,
+        likes = null,
+        likedByMe = false,
+        isPinned = false,
+        reposts = null,
+        views = null,
+        attachments = null
+    )
+
+    private val liveData = MutableLiveData(post)
+    override fun get(): LiveData<Post> = liveData
+
     //метод для создания постов
 
     //Как он должен работать:
@@ -58,28 +77,21 @@ object PostRepositoryImpl : PostRepository {
         }
         return result
     }
-
-    override fun getPostById(postId: Int): LiveData<Post?> {
-        val result = MutableLiveData<Post?>()
-        result.value = posts.find { it.id == postId }
-        return result
-    }
-
-    override fun createComment(postId: Int, comment: Comments): LiveData<Comments> {
-        val result = MutableLiveData<Comments>()
-        // проверка существует ли в массиве posts пост с ID равным postId
-        val postIndex = posts.indexOfFirst { it.id == postId }
-        if (postIndex != -1) {
-            // добавить комментарий в массив и возвращаем его
-            val newComment = comment.copy(id = posts[postIndex].comments?.size?.plus(1) ?: 0)
-            comments += newComment
-            posts[postIndex].comments?.add(newComment)
-            result.value = newComment
-        } else {
-            throw PostNotFoundException("Пост с ID $postId не найден")
-        }
-        return result
-    }
+//    override fun createComment(postId: Int, comment: Comments): LiveData<Comments> {
+//        val result = MutableLiveData<Comments>()
+//        // проверка существует ли в массиве posts пост с ID равным postId
+//        val postIndex = posts.indexOfFirst { it.id == postId }
+//        if (postIndex != -1) {
+//            // добавить комментарий в массив и возвращаем его
+//            val newComment = comment.copy(id = posts[postIndex].comments?.size?.plus(1) ?: 0)
+//            comments += newComment
+//            posts[postIndex].comments?.add(newComment)
+//            result.value = newComment
+//        } else {
+//            throw PostNotFoundException("Пост с ID $postId не найден")
+//        }
+//        return result
+//    }
 
     override fun clearPosts() {
         posts = mutableListOf()
@@ -162,7 +174,11 @@ object PostRepositoryImpl : PostRepository {
                 likes = if (post.likes == null) {
                     Likes(count = 1, userLikes = 0, canLike = true)
                 } else {
-                    Likes(count = post.likes.count + if (post.likedByMe) -1 else 1, userLikes = post.likes.userLikes, canLike = true)
+                    Likes(
+                        count = post.likes.count + if (post.likedByMe) -1 else 1,
+                        userLikes = post.likes.userLikes,
+                        canLike = true
+                    )
                 }
             )
             posts[index] = updatedPost
