@@ -1,35 +1,35 @@
 package ru.netology.nmedia.presentation.viewModel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.netology.nmedia.data.PostRepositoryImpl
 import ru.netology.nmedia.domain.PostRepository
 import ru.netology.nmedia.domain.post.Post
 
-class MainActivityViewModel(private val repository: PostRepository) : ViewModel() {
+class MainActivityViewModel : ViewModel() {
 
-    val liveData: LiveData<Post> = repository.get()
+    private val repository: PostRepository = PostRepositoryImpl
 
-    fun addPost(post: Post): LiveData<Post> {
-        return repository.add(post)
+    val data: LiveData<Post> = repository.get()
+
+    fun likePost() {
+        repository.likePost()
     }
 
-    fun updatePost(post: Post): LiveData<Boolean> {
-        return repository.update(post)
+    fun sharePost() {
+        repository.sharePost()
     }
 
-//    fun createComment(postId: Int, comment: Comments): LiveData<Comments> {
-//        return repository.createComment(postId, comment)
-//    }
-    fun likePost(post: Post): LiveData<Post> {
-        return repository.likePost(post)
+    fun plusView() {
+        repository.plusView()
     }
 
-    fun sharePost(post: Post): LiveData<Post> {
-        return repository.sharePost(post)
+    fun formatCount(count: Int): String {
+        return repository.formatCount(count)
     }
 
-    fun plusView(post: Post): LiveData<Post> {
-        return repository.plusView(post)
+    fun formatPostDate(post: Post, context: Context): String {
+        return repository.formatPostDate(post, context)
     }
 }

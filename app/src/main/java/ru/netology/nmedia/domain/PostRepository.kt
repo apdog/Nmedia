@@ -8,15 +8,9 @@ import java.util.Date
 
 interface PostRepository {
     fun get(): LiveData<Post>
-    fun add(post: Post): LiveData<Post>
-    fun update(post: Post): LiveData<Boolean>
-
-    // fun createComment(postId: Int, comment: Comments): LiveData<Comments>
-    fun clearPosts()
-    fun clearComments()
-    fun formatPostDate(date: Date?, context: Context): String
-    fun likePost(post: Post): LiveData<Post>
-    fun sharePost(post: Post): LiveData<Post>
+    fun likePost()
+    fun sharePost()
+    fun plusView()
     fun formatCount(count: Int): String
-    fun plusView(post: Post): LiveData<Post>
+    fun formatPostDate(post: Post, context: Context): String
 }

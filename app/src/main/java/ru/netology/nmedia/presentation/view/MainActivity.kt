@@ -6,19 +6,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostItemBinding
-import ru.netology.nmedia.data.PostRepositoryImpl
 import ru.netology.nmedia.domain.post.Post
 import ru.netology.nmedia.presentation.viewModel.MainActivityViewModel
-import ru.netology.nmedia.utils.MainActivityViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: PostItemBinding
 
     //инициализация viewModel
-    private val viewModel: MainActivityViewModel by viewModels {
-        MainActivityViewModelFactory(PostRepositoryImpl)
-    }
+    private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,17 +22,18 @@ class MainActivity : AppCompatActivity() {
         binding = PostItemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.liveData.observe(this) { post ->
+        viewModel.data.observe(this) { post ->
             updateUI(post)
 
             with(binding) {
+
                 postLikesImageView.setOnClickListener {
-                    viewModel.likePost(post)
+                    viewModel.likePost()
                 }
 
-                // Обработка клика на иконку репоста
-                postShareImageView.setOnClickListener {
-                    viewModel.sharePost(post)
+                postShareImageView.setOnClickListener{
+                    viewModel.sharePost()
+                    viewModel.plusView()
                 }
 
                 // Обработка клика на кнопку "Еще"
@@ -49,21 +46,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     private fun updateUI(post: Post) {
         with(binding) {
             // Обновление счетчиков лайков, репостов, просмотров и комментариев
-            postLikesCountTextView.text = PostRepositoryImpl.formatCount(post.likes?.count ?: 0)
-            postShareTextView.text = PostRepositoryImpl.formatCount(post.reposts?.count ?: 0)
-            postViewsTextView.text = PostRepositoryImpl.formatCount(post.views?.count ?: 0)
-            postCommentsCountTextView.text = post.comments?.size.toString()
+            postLikesCountTextView.text = viewModel.formatCount(post.likes?.count ?: 0)
+            postShareTextView.text = viewModel.formatCount(post.reposts?.count ?: 0)
+            postViewsTextView.text = viewModel.formatCount(post.views?.count ?: 0)
+            postCommentsCountTextView.text = (post.comments?.size ?: 0).toString()
             // Присвоение текстовой информации посту
             postTitleTextView.text = post.title
             postContentTextView.text = post.text
             postDateTextView.text =
-                PostRepositoryImpl.formatPostDate(post.date, applicationContext)
+                viewModel.formatPostDate(post, applicationContext)
             postCommentsCountTextView.text = post.comments?.size.toString()
             // Обновление иконки лайка в зависимости от состояния likedByMe
             postLikesImageView.setImageResource(
