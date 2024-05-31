@@ -1,7 +1,7 @@
-package ru.netology.nmedia.post
+package ru.netology.nmedia.domain.post
 
 data class Likes(
-    var count: Int = 0,
+    val count: Int = 0,
     val userLikes: Int,
     val canLike: Boolean
 )

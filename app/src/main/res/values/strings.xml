@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">NMedia</string>
     <string name="Greeting">NMedia!</string>
-    <string name="exampleTextTitleOfPost">Netology</string>
-    <string name="exampleTextOfPost" translatable="false">Нейросети восстанут против дизайнеров? Сомнительно, хоть это и пугает. Чтобы избавиться от страха, попробуйте превратить их в союзников. Предлагаем открыть Midjourney и пошагово сгенерировать изображение по инструкции от Андрея Малеваника, автора и преподавателя курса «Нейросети для дизайна». Смотрите подробности о курсе и записывайтесь на бесплатную консультацию по программе обучения: https://netolo.gy/c8Mg</string>
     <string name="exampleTextPostDate">yesterday at 16:08</string>
     <string name="moreButtonDescription">Post menu</string>
     <string name="defaultCounter_0" translatable="false">0</string>
