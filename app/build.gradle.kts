@@ -48,9 +48,11 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     // ViewModel and liveData
-    val lifecycle_version = "2.8.0"
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    // RecyclerView
+    implementation (libs.androidx.recyclerview)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
