@@ -10,17 +10,17 @@ class MainActivityViewModel : ViewModel() {
 
     private val repository: PostRepository = PostRepositoryImpl
 
-    val data: LiveData<Post> = repository.get()
+    val data: LiveData<List<Post>> = repository.get()
 
-    fun likePost() {
-        repository.likePost()
+    fun likePost(id: Int) {
+        repository.likePost(id)
     }
 
-    fun sharePost() {
-        repository.sharePost()
+    fun sharePost(id: Int) {
+        repository.sharePost(id)
     }
 
-    fun plusView() {
-        repository.plusView()
+    fun plusView(id: Int) {
+        repository.plusView(id)
     }
 }
