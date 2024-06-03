@@ -7,7 +7,6 @@ import ru.netology.nmedia.domain.post.Post
 import ru.netology.nmedia.domain.post.Reposts
 import ru.netology.nmedia.domain.post.Views
 import ru.netology.nmedia.domain.PostRepository
-import ru.netology.nmedia.presentation.rv.PostListAdapter
 import java.util.Date
 
 object PostRepositoryImpl : PostRepository {

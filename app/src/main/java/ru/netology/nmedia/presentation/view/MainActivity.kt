@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var postListAdapter: PostListAdapter
-    private lateinit var postlistRV: RecyclerView
 
     //инициализация viewModel
     private val viewModel: MainActivityViewModel by viewModels()
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         initPostRecyclerView()
 
         viewModel.data.observe(this) { posts ->
-            postListAdapter.updateData(posts)
+            postListAdapter.submitList(posts)
         }
     }
 
