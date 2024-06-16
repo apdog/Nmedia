@@ -17,4 +17,5 @@
     <dimen name="start_and_end_post_content_margin_20dp">20dp</dimen>
     <dimen name="start_and_end_margin_action_panel_20dp">20dp</dimen>
     <dimen name="top_and_bottom_margin_of_action_panel_12dp">12dp</dimen>
+    <dimen name="padding_save_button_20dp">20dp</dimen>
 </resources>
