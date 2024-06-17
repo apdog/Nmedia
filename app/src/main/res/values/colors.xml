@@ -3,5 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#717171</color>
-    <color name="red">#FF0000</color>
+    <color name="color_checkbox_tint">#FF0000</color>
+    <color name="background_button_color">#f0f2f5</color>
+    <color name="background_like_button_color">#ffeded</color>
 </resources>

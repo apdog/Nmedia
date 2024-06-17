@@ -20,27 +20,25 @@ class PostListViewHolder(
     fun bind(post: Post) {
         with(binding) {
             // Обновление счетчиков лайков, репостов, просмотров и комментариев
-            postLikesCountTextView.text = formatCount(post.likes?.count ?: 0)
-            postShareTextView.text = formatCount(post.reposts?.count ?: 0)
-            postViewsTextView.text = formatCount(post.views?.count ?: 0)
-            postCommentsCountTextView.text = (post.comments?.size ?: 0).toString()
+            postLikesButton.text = formatCount(post.likes?.count ?: 0)
+            postCommentsButton.text = formatCount(post.comments?.count() ?: 0)
+            postShareButton.text = formatCount(post.reposts?.count ?: 0)
+            postViewsButton.text = formatCount(post.views?.count ?: 0)
+            postCommentsButton.text = (post.comments?.size ?: 0).toString()
             // Присвоение текстовой информации посту
             postTitleTextView.text = post.title
             postContentTextView.text = post.text
             postDateTextView.text = formatPostDate(post)
-            postCommentsCountTextView.text = post.comments?.size.toString()
+            postCommentsButton.text = post.comments?.size.toString()
             // Обновление иконки лайка в зависимости от состояния likedByMe
-            postLikesImageView.setImageResource(
-                if (post.likedByMe) R.drawable.ic_filled_like_24
-                else R.drawable.ic_like_border_24
-            )
+            postLikesButton.isChecked = post.likedByMe
 
             // Установка слушателей на кнопки лайка и репоста
-            postLikesImageView.setOnClickListener {
+            postLikesButton.setOnClickListener {
                 listener.onLike(post)
             }
 
-            postShareImageView.setOnClickListener {
+            postShareButton.setOnClickListener {
                 listener.onShare(post)
             }
 

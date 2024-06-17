@@ -25,10 +25,10 @@ object PostRepositoryImpl : PostRepository {
             text = "Нейросети восстанут против дизайнеров? Сомнительно, хоть это и пугает. Чтобы избавиться от страха, превратите их в союзников. Предлагаем открыть Midjourney и пошагово сгенерировать изображение по инструкции от Андрея Малеваника, автора и преподавателя курса «Нейросети для дизайна».Смотрите подробности о курсе и записывайтесь на бесплатную консультацию по программе обучения: https://netolo.gy/c8Mg",
             friendsOnly = false,
             comments = mutableListOf(),
-            likes = Likes(count = 0, userLikes = 0, canLike = true),
+            likes = Likes(count = 251, userLikes = 0, canLike = true),
             likedByMe = false,
             isPinned = false,
-            reposts = Reposts(count = 0, false),
+            reposts = Reposts(count = 48, false),
             views = Views(count = 0),
             attachments = null
         ), Post(
@@ -39,10 +39,10 @@ object PostRepositoryImpl : PostRepository {
             text = "Предлагаем открыть Midjourney и пошагово сгенерировать изображение по инструкции от Андрея Малеваника, автора и преподавателя курса «Нейросети для дизайна».",
             friendsOnly = false,
             comments = mutableListOf(),
-            likes = Likes(count = 0, userLikes = 0, canLike = true),
+            likes = Likes(count = 35, userLikes = 0, canLike = true),
             likedByMe = false,
             isPinned = false,
-            reposts = Reposts(count = 0, false),
+            reposts = Reposts(count = 10, false),
             views = Views(count = 0),
             attachments = null
         )
