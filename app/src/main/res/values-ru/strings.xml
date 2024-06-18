@@ -33,4 +33,10 @@
     <string name="many_years">лет назад</string>
     <string name="just_now">только что</string>
     <string name="open_additional_menu">меню поста открыто</string>
+    <string name="edit_Post">Редактировать</string>
+    <string name="remove_Post">Удалить</string>
+    <string name="post_text_field">Написать пост</string>
+    <string name="exampleTextTitleOfPost">Нетология</string>
+    <string name="exampleTextOfPost">Пример текста поста</string>
+    <string name="edit_post">Редактирование поста</string>
 </resources>

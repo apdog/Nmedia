@@ -8,4 +8,6 @@ interface PostRepository {
     fun likePost(id: Int)
     fun sharePost(id: Int)
     fun plusView(id: Int)
+    fun removeById(id: Int)
+    fun save(post: Post)
 }

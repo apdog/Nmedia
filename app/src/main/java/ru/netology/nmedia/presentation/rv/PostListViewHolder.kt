@@ -1,17 +1,20 @@
 package ru.netology.nmedia.presentation.rv
 
 import android.content.Context
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.withContext
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostItemBinding
 import ru.netology.nmedia.domain.post.Post
 import java.util.Date
 
+
 class PostListViewHolder(
     private val binding: PostItemBinding,
-    private val onLikeClicked: (Post) -> Unit,
-    private val onShareClicked: (Post) -> Unit
+    private val listener: OnInteractionListener,
+    private val context: Context
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: Post) {
@@ -24,7 +27,7 @@ class PostListViewHolder(
             // Присвоение текстовой информации посту
             postTitleTextView.text = post.title
             postContentTextView.text = post.text
-//            postDateTextView.text = formatPostDate(post)
+            postDateTextView.text = formatPostDate(post)
             postCommentsCountTextView.text = post.comments?.size.toString()
             // Обновление иконки лайка в зависимости от состояния likedByMe
             postLikesImageView.setImageResource(
@@ -34,11 +37,30 @@ class PostListViewHolder(
 
             // Установка слушателей на кнопки лайка и репоста
             postLikesImageView.setOnClickListener {
-                onLikeClicked(post)
+                listener.onLike(post)
             }
 
             postShareImageView.setOnClickListener {
-                onShareClicked(post)
+                listener.onShare(post)
+            }
+
+            optionMenuButton.setOnClickListener {
+                PopupMenu(it.context, it).apply {
+                    inflate(R.menu.post_option_menu)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.removePost -> {
+                                listener.onRemove(post)
+                                true
+                            }
+                            R.id.editPost -> {
+                                listener.onEdit(post)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                }.show()
             }
         }
     }
@@ -52,7 +74,7 @@ class PostListViewHolder(
         }
     }
 
-    private fun formatPostDate(post: Post, context: Context): String {
+    private fun formatPostDate(post: Post): String {
         val now = Date()
         val seconds = (now.time - post.date.time) / 1000
         val minutes = seconds / 60

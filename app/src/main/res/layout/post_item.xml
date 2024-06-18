@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/more_button"
+            android:id="@+id/option_menu_button"
             android:layout_width="@dimen/weight_of_post_additional_menu_48dp"
             android:layout_height="0dp"
             android:layout_marginEnd="@dimen/margin_of_button_4dp"
@@ -55,7 +55,7 @@
             android:layout_marginEnd="@dimen/post_info_margin_12dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/avatar_card_view"
-            app:layout_constraintEnd_toStartOf="@+id/more_button"
+            app:layout_constraintEnd_toStartOf="@+id/option_menu_button"
             app:layout_constraintStart_toEndOf="@id/avatar_card_view"
             app:layout_constraintTop_toTopOf="@+id/avatar_card_view">
 

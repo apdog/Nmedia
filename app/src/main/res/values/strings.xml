@@ -5,7 +5,7 @@
     <string name="moreButtonDescription">Post menu</string>
     <string name="defaultCounter_0" translatable="false">0</string>
     <string name="Avatar">Avatar</string>
-    <string name="likesDescription">Liikes</string>
+    <string name="likesDescription">Likes</string>
     <string name="commentDescription">Comments</string>
     <string name="shareDescription">Share</string>
     <string name="viewDescription">Views</string>
@@ -33,4 +33,10 @@
     <string name="many_years">years ago</string>
     <string name="just_now">Just now</string>
     <string name="open_additional_menu">open additional menu</string>
+    <string name="edit_Post">Edit</string>
+    <string name="remove_Post">Remove</string>
+    <string name="post_text_field">Write post</string>
+    <string name="exampleTextTitleOfPost">Netology</string>
+    <string name="exampleTextOfPost">Example of post text</string>
+    <string name="edit_post">Edit Post</string>
 </resources>
