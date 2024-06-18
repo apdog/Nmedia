@@ -101,5 +101,6 @@ class MainActivity : AppCompatActivity() {
             clearFocus()
             AndroidUtils.hideKeyboard(this)
         }
+        viewModel.cancelEditing()
     }
 }

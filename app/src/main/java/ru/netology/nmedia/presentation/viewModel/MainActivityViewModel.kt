@@ -68,4 +68,7 @@ class MainActivityViewModel : ViewModel() {
         edited.value = edited.value?.copy(text = text)
     }
 
+    fun cancelEditing() {
+        edited.value = emptyPost
+    }
 }
