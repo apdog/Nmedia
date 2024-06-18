@@ -15,14 +15,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/option_menu_button"
-            android:layout_width="@dimen/weight_of_post_additional_menu_48dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:backgroundTint="@android:color/transparent"
+            style="@style/Theme.OptionMenuButton"
+            app:icon="@drawable/ic_more_dote_24"
             android:layout_marginEnd="@dimen/margin_of_button_4dp"
             android:background="@android:color/transparent"
             android:contentDescription="@string/moreButtonDescription"
-            android:src="@drawable/ic_more_dote_24"
             app:layout_constraintBottom_toBottomOf="@+id/post_info_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/post_info_layout" />
@@ -118,107 +121,101 @@
 
             <LinearLayout
                 android:id="@+id/space_for_likes"
-                android:layout_width="@dimen/height_of_part_action_panel_80dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="left"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-                <ImageView
-                    android:id="@+id/post_likes_image_view"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/post_likes_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_inside_action_panel_8dp"
+                    app:tabRippleColor="@null"
                     android:contentDescription="@string/likesDescription"
-                    android:src="@drawable/ic_like_border_24" />
-
-                <TextView
-                    android:id="@+id/post_likes_count_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:checkable="true"
+                    android:backgroundTint="@color/like_background_color"
                     android:text="@string/defaultCounter_0"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/size_of_action_panel_text_14sp" />
+                    android:textColor="@color/like_text_color"
+                    android:textSize="@dimen/size_of_action_panel_text_14sp"
+                    style="@style/Theme.LikesButton"
+                    app:icon="@drawable/ic_like_selector" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/space_for_comments"
-                android:layout_width="@dimen/height_of_part_action_panel_80dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-                <ImageView
-                    android:id="@+id/post_comments_image_view"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/post_comments_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_inside_action_panel_8dp"
                     android:contentDescription="@string/commentDescription"
-                    android:src="@drawable/ic_comment_24" />
-
-                <TextView
-                    android:id="@+id/post_comments_count_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/defaultCounter_0"
+                    app:tabRippleColor="@null"
+                    android:checkable="true"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/size_of_action_panel_text_14sp" />
+                    style="@style/Theme.CommentsButton"
+                    android:textSize="@dimen/size_of_action_panel_text_14sp"
+                    android:backgroundTint="@color/background_button_color"
+                    app:icon="@drawable/ic_comment_24" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/space_for_share"
-                android:layout_width="@dimen/height_of_part_action_panel_80dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-                <ImageView
-                    android:id="@+id/post_share_image_view"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/post_share_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_inside_action_panel_8dp"
                     android:contentDescription="@string/shareDescription"
-                    android:rotationY="180"
-                    android:src="@drawable/ic_share_24" />
-
-                <TextView
-                    android:id="@+id/post_share_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/defaultCounter_0"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/size_of_action_panel_text_14sp" />
+                    app:tabRippleColor="@null"
+                    style="@style/Theme.SharesButton"
+                    android:textSize="@dimen/size_of_action_panel_text_14sp"
+                    android:backgroundTint="@color/background_button_color"
+                    app:icon="@drawable/ic_share_24" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/space_for_views"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="right"
                 android:orientation="horizontal"
                 tools:ignore="RtlHardcoded,UseCompoundDrawables">
 
-                <ImageView
-                    android:id="@+id/post_views_image_view"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/post_views_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_inside_action_panel_8dp"
                     android:contentDescription="@string/viewDescription"
-                    android:src="@drawable/ic_view_24" />
-
-                <TextView
-                    android:id="@+id/post_views_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:text="@string/defaultCounter_0"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/size_of_action_panel_text_14sp" />
+                    android:clickable="false"
+                    app:tabRippleColor="@null"
+                    style="@style/Theme.ViewsButton"
+                    android:textSize="@dimen/size_of_action_panel_text_14sp"
+                    android:backgroundTint="@android:color/transparent"
+                    app:icon="@drawable/ic_view_24" />
             </LinearLayout>
 
         </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
