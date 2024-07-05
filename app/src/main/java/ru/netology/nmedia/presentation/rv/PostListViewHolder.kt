@@ -1,13 +1,16 @@
 package ru.netology.nmedia.presentation.rv
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.withContext
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostItemBinding
 import ru.netology.nmedia.domain.post.Post
+import ru.netology.nmedia.domain.post.attachments.VideoAttachment
 import java.util.Date
 
 
@@ -60,6 +63,28 @@ class PostListViewHolder(
                     }
                 }.show()
             }
+        }
+
+        // Обновление видео
+        val videoAttachment = post.attachments?.find { it is VideoAttachment } as? VideoAttachment
+        if (videoAttachment != null) with(binding) {
+            videoContainer.visibility = View.VISIBLE
+            videoTitle.text = videoAttachment.video.title
+            // Подгружаем изображение
+            videoThumbnail.setImageResource(videoAttachment.video.image)
+            // Разрешаем жмякать на кнопку и на всю область видео
+            videoContainer.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${videoAttachment.video.url}"))
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // добавляем флаг
+                context.startActivity(intent)
+            }
+            playButton.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${videoAttachment.video.url}"))
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // добавляем флаг
+                context.startActivity(intent)
+            }
+        } else {
+            binding.videoContainer.visibility = View.GONE
         }
     }
 
