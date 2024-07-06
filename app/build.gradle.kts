@@ -55,6 +55,9 @@ dependencies {
     // RecyclerView
     implementation (libs.androidx.recyclerview)
 
+   //JSON
+    implementation(libs.gson)
+
     // Material design
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)

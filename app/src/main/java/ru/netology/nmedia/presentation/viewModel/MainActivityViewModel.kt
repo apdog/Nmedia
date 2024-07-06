@@ -1,14 +1,15 @@
 package ru.netology.nmedia.presentation.viewModel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import ru.netology.nmedia.data.PostRepositoryImpl
+import ru.netology.nmedia.data.PostRepositoryFileImpl
 import ru.netology.nmedia.domain.PostRepository
 import ru.netology.nmedia.domain.post.Post
 import java.util.Date
 
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
     // дата объект для сохранения
     private val emptyPost = Post(
         id = 0,
@@ -26,7 +27,7 @@ class MainActivityViewModel : ViewModel() {
         attachments = listOf()
     )
 
-    private val repository: PostRepository = PostRepositoryImpl
+    private val repository: PostRepository = PostRepositoryFileImpl(application)
     val data: LiveData<List<Post>> = repository.get()
 
     val edited = MutableLiveData(emptyPost)
