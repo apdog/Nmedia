@@ -39,4 +39,10 @@
     <string name="exampleTextTitleOfPost">Netology</string>
     <string name="exampleTextOfPost">Example of post text</string>
     <string name="edit_post">Edit Post</string>
+    <string name="add_a_new_post">Add a New Post</string>
+    <string name="add_post">Add</string>
+    <string name="content">Content</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="Name_of_video">Name of video</string>
 </resources>

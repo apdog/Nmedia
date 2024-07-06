@@ -8,6 +8,8 @@ import ru.netology.nmedia.domain.post.Post
 import ru.netology.nmedia.domain.post.Reposts
 import ru.netology.nmedia.domain.post.Views
 import ru.netology.nmedia.domain.PostRepository
+import ru.netology.nmedia.domain.post.attachments.Video
+import ru.netology.nmedia.domain.post.attachments.VideoAttachment
 import java.util.Date
 
 object PostRepositoryImpl : PostRepository {
@@ -30,7 +32,19 @@ object PostRepositoryImpl : PostRepository {
             isPinned = false,
             reposts = Reposts(count = 48, false),
             views = Views(count = 0),
-            attachments = null
+            attachments = listOf(
+                VideoAttachment(
+                    Video(
+                        id = 1,
+                        ownerId = 0,
+                        title = "Очень важное видео",
+                        description = "Смешные животные",
+                        duration = 300,
+                        image = R.drawable.placeholder_img,
+                        url = "https://www.youtube.com/watch?v=xbks1QDEWNM&t=43s"
+                    )
+                )
+            )
         ), Post(
             id = 2,
             fromId = 0,
@@ -105,10 +119,18 @@ object PostRepositoryImpl : PostRepository {
             liveData.value = listOfPosts
             return
         }
+        update(post)
 
         listOfPosts = listOfPosts.map {
             if (it.id != post.id) it else it.copy(text = post.text)
         }
+        liveData.value = listOfPosts
+    }
+
+    private fun update(post: Post) {
+        listOfPosts = listOfPosts.map {
+            if (it.id != post.id) it else post
+        }.toMutableList()
         liveData.value = listOfPosts
     }
 }

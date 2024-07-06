@@ -37,4 +37,11 @@
         <item name="android:minWidth">20dp</item>
         <item name="android:minHeight">20dp</item>
     </style>
+
+    <style name="Theme.NMedia.Transparent" parent="Base.Theme.NMedia">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
 </resources>

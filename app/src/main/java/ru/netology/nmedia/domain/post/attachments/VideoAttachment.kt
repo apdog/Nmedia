@@ -1,7 +1,5 @@
 package ru.netology.nmedia.domain.post.attachments
 
-import java.util.*
-
 data class VideoAttachment(val video: Video) : Attachment("video")
 
 data class Video(
@@ -10,7 +8,6 @@ data class Video(
     val title: String?, //название видеозаписи
     val description: String?, // описание видеозаписи
     val duration: Int, // длительность видеозаписи
-    val image: String?, // обложка
-    val views: Int, // количество просмотров
-    val date: Date // дата добавления
+    val image: Int, // обложка
+    val url: String
 )

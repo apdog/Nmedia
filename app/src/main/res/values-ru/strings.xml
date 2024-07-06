@@ -39,4 +39,10 @@
     <string name="exampleTextTitleOfPost">Нетология</string>
     <string name="exampleTextOfPost">Пример текста поста</string>
     <string name="edit_post">Редактирование поста</string>
+    <string name="add_a_new_post">Добавить пост</string>
+    <string name="add_post">Добавить</string>
+    <string name="content">Текст</string>
+    <string name="update">Обновить</string>
+    <string name="cancel">Отмена</string>
+    <string name="Name_of_video">Название видеоролика</string>
 </resources>
