@@ -1,5 +1,7 @@
 package ru.netology.nmedia.presentation.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -59,6 +61,12 @@ class MainActivity : AppCompatActivity() {
 
             override fun onRemove(post: Post) {
                 viewModel.removeById(post.id)
+            }
+
+            override fun onVideoClick(videoUrl: String) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl))
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
         },
             applicationContext

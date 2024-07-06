@@ -41,7 +41,7 @@ object PostRepositoryImpl : PostRepository {
                         description = "Смешные животные",
                         duration = 300,
                         image = R.drawable.placeholder_img,
-                        url = "xbks1QDEWNM&t=43s"
+                        url = "https://www.youtube.com/watch?v=xbks1QDEWNM&t=43s"
                     )
                 )
             )
