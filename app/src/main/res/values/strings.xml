@@ -45,6 +45,4 @@
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
     <string name="Name_of_video">Name of video</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
