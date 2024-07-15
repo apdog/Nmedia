@@ -3,51 +3,60 @@ package ru.netology.nmedia.presentation.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.netology.nmedia.databinding.ActivityMainBinding
+import ru.netology.nmedia.R
+import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.domain.post.Post
 import ru.netology.nmedia.presentation.rv.OnInteractionListener
 import ru.netology.nmedia.presentation.rv.PostListAdapter
-import ru.netology.nmedia.presentation.viewModel.MainActivityViewModel
-import ru.netology.nmedia.utils.NewPostResultContract
+import ru.netology.nmedia.presentation.view.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.presentation.viewModel.PostViewModel
 
-class MainActivity : AppCompatActivity() {
+class FeedFragment : Fragment() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: FragmentFeedBinding
     private lateinit var postListAdapter: PostListAdapter
 
-    private val viewModel: MainActivityViewModel by viewModels()
+    private val viewModel: PostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
 
-    private val newPostLauncher = registerForActivityResult(NewPostResultContract()) { result ->
-        result ?: return@registerForActivityResult
-        viewModel.changePostContent(result)
-        viewModel.save()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentFeedBinding.inflate(inflater, container, false)
         initPostRecyclerView()
 
-        viewModel.data.observe(this) { posts ->
+        viewModel.data.observe(viewLifecycleOwner) { posts ->
             postListAdapter.submitList(posts)
         }
 
         binding.addPostFAB.setOnClickListener {
             viewModel.cancelEditing()
-            newPostLauncher.launch(Pair(null, false)) // Новый пост
+            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
+        return binding.root
     }
 
     private fun initPostRecyclerView() {
         postListAdapter = PostListAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
-                newPostLauncher.launch(Pair(post.text, true))
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_newPostFragment,
+                    Bundle().apply {
+                        textArg = post.text
+                        putBoolean("IS_EDIT_MODE", true)
+                    }
+                )
             }
 
             override fun onLike(post: Post) {
@@ -69,12 +78,12 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         },
-            applicationContext
+            requireContext()
         )
 
         binding.postListRecyclerView.apply {
             adapter = postListAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            layoutManager = LinearLayoutManager(requireContext())
         }
     }
 }
