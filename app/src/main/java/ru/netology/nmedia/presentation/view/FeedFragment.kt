@@ -77,6 +77,16 @@ class FeedFragment : Fragment() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
+
+            override fun onPostClick(post: Post) {
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_postDetailsFragment,
+                    Bundle().apply {
+                        putInt("POST_ID", post.id)
+                    }
+                )
+            }
+
         },
             requireContext()
         )

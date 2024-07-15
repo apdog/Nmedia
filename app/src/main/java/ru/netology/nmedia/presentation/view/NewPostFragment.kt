@@ -1,7 +1,6 @@
 package ru.netology.nmedia.presentation.view
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

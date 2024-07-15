@@ -1,8 +1,7 @@
 package ru.netology.nmedia.presentation.rv
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
+import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -20,7 +19,7 @@ class PostListViewHolder(
     private val context: Context
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(post: Post) {
+    fun bind(post: Post, showFullText: Boolean = false) {
         with(binding) {
             // Обновление счетчиков лайков, репостов, просмотров и комментариев
             postLikesButton.text = formatCount(post.likes?.count ?: 0)
@@ -36,9 +35,22 @@ class PostListViewHolder(
             // Обновление иконки лайка в зависимости от состояния likedByMe
             postLikesButton.isChecked = post.likedByMe
 
+            if (showFullText) {
+                postContentTextView.maxLines = Integer.MAX_VALUE
+                postContentTextView.ellipsize = null
+            } else {
+                postContentTextView.maxLines = 10
+                postContentTextView.ellipsize = TextUtils.TruncateAt.END
+            }
+
             // Установка слушателей на кнопки лайка и репоста
             postLikesButton.setOnClickListener {
                 listener.onLike(post)
+            }
+
+            // Установка слушателя на пост
+            root.setOnClickListener {
+                listener.onPostClick(post)
             }
 
             postShareButton.setOnClickListener {

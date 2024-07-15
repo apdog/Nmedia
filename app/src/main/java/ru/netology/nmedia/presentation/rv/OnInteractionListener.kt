@@ -8,4 +8,5 @@ interface OnInteractionListener {
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
     fun onVideoClick(videoUrl: String) {}
+    fun onPostClick(post: Post) {}
 }
