@@ -9,7 +9,7 @@ import ru.netology.nmedia.domain.PostRepository
 import ru.netology.nmedia.domain.post.Post
 import java.util.Date
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
+class PostViewModel(application: Application) : AndroidViewModel(application) {
     // дата объект для сохранения
     private val emptyPost = Post(
         id = 0,
@@ -30,7 +30,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     private val repository: PostRepository = PostRepositoryFileImpl(application)
     val data: LiveData<List<Post>> = repository.get()
 
-    val edited = MutableLiveData(emptyPost)
+    private val edited = MutableLiveData(emptyPost)
 
     fun likePost(id: Int) {
         repository.likePost(id)
