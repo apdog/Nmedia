@@ -22,6 +22,7 @@ class FeedFragment : Fragment() {
 
     private lateinit var binding: FragmentFeedBinding
     private lateinit var postListAdapter: PostListAdapter
+    private var isEditing = false
 
     private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
@@ -37,9 +38,15 @@ class FeedFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner) { posts ->
             postListAdapter.submitList(posts)
+            //прокрутка при добавлении поста
+            if (!isEditing) {
+                binding.postListRecyclerView.scrollToPosition(0)
+            }
+
         }
 
         binding.addPostFAB.setOnClickListener {
+            isEditing = false
             viewModel.cancelEditing()
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
@@ -49,6 +56,7 @@ class FeedFragment : Fragment() {
     private fun initPostRecyclerView() {
         postListAdapter = PostListAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
+                isEditing = true
                 viewModel.edit(post)
                 findNavController().navigate(
                     R.id.action_feedFragment_to_newPostFragment,
