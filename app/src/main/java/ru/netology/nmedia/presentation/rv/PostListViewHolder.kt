@@ -22,16 +22,16 @@ class PostListViewHolder(
     fun bind(post: Post, showFullText: Boolean = false) {
         with(binding) {
             // Обновление счетчиков лайков, репостов, просмотров и комментариев
-            postLikesButton.text = formatCount(post.likes?.count ?: 0)
-            postCommentsButton.text = formatCount(post.comments?.count() ?: 0)
-            postShareButton.text = formatCount(post.reposts?.count ?: 0)
-            postViewsButton.text = formatCount(post.views?.count ?: 0)
-            postCommentsButton.text = (post.comments?.size ?: 0).toString()
+            postLikesButton.text = formatCount(post.likes)
+            postCommentsButton.text = formatCount(post.comments)
+            postShareButton.text = formatCount(post.reposts)
+            postViewsButton.text = formatCount(post.views)
+            postCommentsButton.text = post.comments.toString()
             // Присвоение текстовой информации посту
             postTitleTextView.text = post.title
             postContentTextView.text = post.text
             postDateTextView.text = formatPostDate(post)
-            postCommentsButton.text = post.comments?.size.toString()
+            postCommentsButton.text = post.comments.toString()
             // Обновление иконки лайка в зависимости от состояния likedByMe
             postLikesButton.isChecked = post.likedByMe
 
