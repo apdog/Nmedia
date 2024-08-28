@@ -4,17 +4,18 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.netology.nmedia.data.PostRepositorySQLiteImpl
+import ru.netology.nmedia.data.PostRepositoryImpl
 import ru.netology.nmedia.data.db.AppDb
 import ru.netology.nmedia.domain.PostRepository
 import ru.netology.nmedia.domain.post.Post
 import java.util.Date
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
+
     // дата объект для сохранения
     private val emptyPost = Post(
-        id = 0,
-        fromId = 0,
+        id = 0L,
+        fromId = 0L,
         date = Date(),
         title = "",
         text = null,
@@ -28,26 +29,26 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         attachments = listOf()
     )
 
-    private val repository: PostRepository = PostRepositorySQLiteImpl(
+    private val repository: PostRepository = PostRepositoryImpl(
         AppDb.getInstance(application).postDao
     )
     val data: LiveData<List<Post>> = repository.get()
 
     private val edited = MutableLiveData(emptyPost)
 
-    fun likePost(id: Int) {
+    fun likePost(id: Long) {
         repository.likePost(id)
     }
 
-    fun sharePost(id: Int) {
+    fun sharePost(id: Long) {
         repository.sharePost(id)
     }
 
-    fun plusView(id: Int) {
+    fun plusView(id: Long) {
         repository.plusView(id)
     }
 
-    fun removeById(id: Int) {
+    fun removeById(id: Long) {
         repository.removeById(id)
     }
 

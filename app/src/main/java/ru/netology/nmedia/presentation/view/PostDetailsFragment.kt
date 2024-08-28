@@ -61,7 +61,7 @@ class PostDetailsFragment : Fragment() {
             }
         }, requireContext())
 
-        val postId = arguments?.getInt("POST_ID") ?: return binding.root
+        val postId = arguments?.getLong("POST_ID") ?: return binding.root
 
         viewModel.data.observe(viewLifecycleOwner) { posts ->
             val post = posts.find { it.id == postId } ?: return@observe
