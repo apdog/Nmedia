@@ -10,11 +10,11 @@ data class Post(
     val title: String, // заголовок поста
     val text: String?, // Текст поста
     val friendsOnly: Boolean, // если пост виден только друзьям
-    val comments: MutableList<Comments>? = mutableListOf(), // Информация о комментариях
-    val likes: Likes?, // Информация о лайках
+    val comments: Int = 0, // Информация о комментариях
+    val likes: Int, // Информация о лайках
     val likedByMe: Boolean = false, // Лайкнул ли я пост
-    val reposts: Reposts?, // Информация о репостах
-    val views: Views?, // Информация о просмотрах
+    val reposts: Int, // Информация о репостах
+    val views: Int, // Информация о просмотрах
     val isPinned: Boolean, // Закреплен ли пост
     val attachments: List<Attachment>?, // Массив объектов с медиавложениями: фото, видео, документы
 )

@@ -4,7 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.netology.nmedia.data.PostRepositoryFileImpl
+import ru.netology.nmedia.data.PostRepositorySQLiteImpl
+import ru.netology.nmedia.data.db.AppDb
 import ru.netology.nmedia.domain.PostRepository
 import ru.netology.nmedia.domain.post.Post
 import java.util.Date
@@ -18,16 +19,18 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         title = "",
         text = null,
         friendsOnly = false,
-        comments = null,
-        likes = null,
+        comments = 0,
+        likes = 0,
         likedByMe = false,
-        reposts = null,
-        views = null,
+        reposts = 0,
+        views = 0,
         isPinned = false,
         attachments = listOf()
     )
 
-    private val repository: PostRepository = PostRepositoryFileImpl(application)
+    private val repository: PostRepository = PostRepositorySQLiteImpl(
+        AppDb.getInstance(application).postDao
+    )
     val data: LiveData<List<Post>> = repository.get()
 
     private val edited = MutableLiveData(emptyPost)
