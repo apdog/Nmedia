@@ -44,7 +44,7 @@ class PostDetailsFragment : Fragment() {
                 viewModel.edit(post)
                 findNavController().navigate(R.id.action_postDetailsFragment_to_newPostFragment,
                     Bundle().apply {
-                        textArg = post.text
+                        textArg = post.content
                         putBoolean("IS_EDIT_MODE", true)
                     })
             }
@@ -63,8 +63,8 @@ class PostDetailsFragment : Fragment() {
 
         val postId = arguments?.getLong("POST_ID") ?: return binding.root
 
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val post = posts.find { it.id == postId } ?: return@observe
+        viewModel.data.observe(viewLifecycleOwner) { feedModel ->
+            val post = feedModel.posts.find { it.id == postId } ?: return@observe
             viewHolder.bind(post, showFullText = true)
         }
 

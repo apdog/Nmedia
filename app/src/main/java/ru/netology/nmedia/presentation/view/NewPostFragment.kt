@@ -41,10 +41,13 @@ class NewPostFragment : Fragment() {
             editTextContent.requestFocus()
             buttonSubmit.setOnClickListener {
                 if (editTextContent.text.isNotBlank()) {
-                    viewModel.changePostContent(editTextContent.text.toString())
+                    viewModel.changeContent(editTextContent.text.toString())
                     viewModel.save()
-                    findNavController().navigateUp()
                 }
+            }
+            viewModel.postCreated.observe(viewLifecycleOwner) {
+                viewModel.loadPosts()
+                findNavController().navigateUp()
             }
 
             buttonCancel.setOnClickListener {

@@ -50,4 +50,7 @@
     <string name="notification_user_liked">%1$s поставил лайк посту %2$s</string>
     <string name="unknown_action">неизвестный action %1$s</string>
     <string name="notification_new_post">%1$s опубликовал новый пост:</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="retry">Повторить</string>
+    <string name="posts_is_not_found">Посты не найдены</string>
 </resources>
