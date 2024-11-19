@@ -90,7 +90,7 @@ class FeedFragment : Fragment() {
                 findNavController().navigate(
                     R.id.action_feedFragment_to_postDetailsFragment,
                     Bundle().apply {
-                        putInt("POST_ID", post.id)
+                        putLong("POST_ID", post.id)
                     }
                 )
             }
