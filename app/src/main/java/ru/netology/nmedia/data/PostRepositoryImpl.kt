@@ -8,6 +8,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nmedia.domain.PostRepository
 import ru.netology.nmedia.domain.post.Post
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class PostRepositoryImpl : PostRepository {
@@ -49,7 +50,7 @@ class PostRepositoryImpl : PostRepository {
             .close()
     }
 
-    override fun likeById(id: Long) {
+    override fun likeById(id: Long): Post {
         val post = getAll().find { it.id == id } ?: throw IllegalArgumentException("Пост не найден")
         val request = if (post.likedByMe) {
             Request.Builder()
@@ -64,10 +65,11 @@ class PostRepositoryImpl : PostRepository {
         }
 
         client.newCall(request).execute().use { response ->
-            val updatedPost = gson.fromJson(response.body?.string(), Post::class.java)
-            updatePostInList(updatedPost)
+            if (!response.isSuccessful) throw RuntimeException("Ошибка сервера: ${response.code}")
+            return gson.fromJson(response.body?.string(), Post::class.java)
         }
     }
+
 
     override fun sharePost(id: Long) {
         TODO()
