@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -36,13 +37,27 @@ class FeedFragment : Fragment() {
         binding = FragmentFeedBinding.inflate(inflater, container, false)
         initPostRecyclerView()
 
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            postListAdapter.submitList(posts)
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            postListAdapter.submitList(state.posts)
+            binding.errorGroup.isVisible = state.error
+            binding.empty.isVisible = state.empty
+            binding.progress.isVisible = state.loading && !binding.swipeRefreshLayout.isRefreshing
+
+            binding.swipeRefreshLayout.isRefreshing = state.loading && binding.swipeRefreshLayout.isRefreshing
+
             //прокрутка при добавлении поста
             if (!isEditing) {
                 binding.postListRecyclerView.scrollToPosition(0)
             }
 
+        }
+
+        binding.retryButton.setOnClickListener {
+            viewModel.loadPosts()
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.loadPosts()
         }
 
         binding.addPostFAB.setOnClickListener {
@@ -61,7 +76,7 @@ class FeedFragment : Fragment() {
                 findNavController().navigate(
                     R.id.action_feedFragment_to_newPostFragment,
                     Bundle().apply {
-                        textArg = post.text
+                        textArg = post.content
                         putBoolean("IS_EDIT_MODE", true)
                     }
                 )

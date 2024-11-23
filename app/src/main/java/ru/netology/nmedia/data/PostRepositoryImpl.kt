@@ -1,46 +1,101 @@
 package ru.netology.nmedia.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
-import ru.netology.nmedia.data.dao.PostDao
-import ru.netology.nmedia.data.entity.PostEntity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import ru.netology.nmedia.domain.PostRepository
 import ru.netology.nmedia.domain.post.Post
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 
-class PostRepositoryImpl(
-    private val dao: PostDao
-) : PostRepository {
+class PostRepositoryImpl : PostRepository {
 
-    override fun get(): LiveData<List<Post>> = dao.getAll().map { posts ->
-        posts.map {
-            it.toDto()
-        }
+    private val client = OkHttpClient.Builder()
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .build()
+
+    private val gson = Gson()
+
+    private val typeToken = object : TypeToken<List<Post>>() {}
+
+    private companion object {
+        const val BASE_URL = "http://10.0.2.2:9999"
+        val jsonType = "application/json".toMediaType()
     }
 
-    override fun save(post: Post) {
-        if (post.id == 0L) {
-            // Если id == 0, значит это новый пост, вставляем его
-            dao.save(PostEntity.fromDto(post))
+    override fun getAll(): List<Post> {
+        val request = Request.Builder()
+            .url("${BASE_URL}/api/slow/posts")
+            .build()
+
+        return client.newCall(request)
+            .execute()
+            .let { it.body?.string() ?: throw RuntimeException("Body is null") }
+            .let {
+                gson.fromJson(it, typeToken.type)
+            }
+    }
+
+    override fun save(post: Post){
+        val request: Request = Request.Builder()
+            .post(gson.toJson(post).toRequestBody(jsonType))
+            .url("${BASE_URL}/api/slow/posts")
+            .build()
+
+        client.newCall(request)
+            .execute()
+            .close()
+    }
+
+    override fun likeById(id: Long): Post {
+        val post = getAll().find { it.id == id } ?: throw IllegalArgumentException("Пост не найден")
+        val request = if (post.likedByMe) {
+            Request.Builder()
+                .delete()
+                .url("${BASE_URL}/api/posts/$id/likes")
+                .build()
         } else {
-            // Иначе обновляем существующий пост
-            dao.update(PostEntity.fromDto(post))
+            Request.Builder()
+                .post("".toRequestBody())
+                .url("${BASE_URL}/api/posts/$id/likes")
+                .build()
+        }
+
+        client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) throw RuntimeException("Ошибка сервера: ${response.code}")
+            return gson.fromJson(response.body?.string(), Post::class.java)
         }
     }
 
-    override fun likePost(id: Long) {
-        dao.likeById(id)
-    }
 
     override fun sharePost(id: Long) {
-        dao.sharePost(id)
+        TODO()
     }
 
     override fun plusView(id: Long) {
-        dao.plusView(id)
+        TODO()
     }
 
     override fun removeById(id: Long) {
-        dao.removeById(id)
+        val request: Request = Request.Builder()
+            .delete()
+            .url("${BASE_URL}/api/slow/posts/$id")
+            .build()
+
+        client.newCall(request)
+            .execute()
+            .close()
+    }
+
+    private fun updatePostInList(updatedPost: Post) {
+        val posts = getAll().toMutableList()
+        val index = posts.indexOfFirst { it.id == updatedPost.id }
+        if (index != -1) {
+            posts[index] = updatedPost
+        }
     }
 
 }
