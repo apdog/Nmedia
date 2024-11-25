@@ -1,17 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.google.gms.google-services")
     id("kotlin-kapt")
 }
 
 android {
     namespace = "ru.netology.nmedia"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "ru.netology.nmedia"
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -20,11 +21,16 @@ android {
 
     buildTypes {
         release {
+            manifestPlaceholders += mapOf()
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            manifestPlaceholders["usesCleartextTraffic"] = false
+        }
+        debug {
+            manifestPlaceholders["usesCleartextTraffic"] = true
         }
     }
     compileOptions {
@@ -72,4 +78,16 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
+
+    // Import the Firebase BoM
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.play.services.base)
+
+    //okhttp
+    implementation(libs.okhttp)
+
+    //swipe
+    implementation(libs.androidx.swiperefreshlayout)
+
 }

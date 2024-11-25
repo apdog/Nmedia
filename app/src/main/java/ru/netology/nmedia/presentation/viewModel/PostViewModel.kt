@@ -5,59 +5,109 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.data.PostRepositoryImpl
-import ru.netology.nmedia.data.db.AppDb
 import ru.netology.nmedia.domain.PostRepository
+import ru.netology.nmedia.domain.post.FeedModel
 import ru.netology.nmedia.domain.post.Post
-import java.util.Date
+import ru.netology.nmedia.utils.SingleLiveEvent
+import java.io.IOException
+import kotlin.concurrent.thread
+
+// дата объект для сохранения
+private val empty = Post(
+    id = 0L,
+    author = 0L,
+    date = 0L,
+    title = "",
+    content = null,
+    friendsOnly = false,
+    comments = 0,
+    likes = 0,
+    likedByMe = false,
+    reposts = 0,
+    views = 0,
+    isPinned = false,
+    attachments = listOf()
+)
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
 
-    // дата объект для сохранения
-    private val emptyPost = Post(
-        id = 0L,
-        fromId = 0L,
-        date = Date(),
-        title = "",
-        text = null,
-        friendsOnly = false,
-        comments = 0,
-        likes = 0,
-        likedByMe = false,
-        reposts = 0,
-        views = 0,
-        isPinned = false,
-        attachments = listOf()
-    )
+    private val repository: PostRepository = PostRepositoryImpl()
 
-    private val repository: PostRepository = PostRepositoryImpl(
-        AppDb.getInstance(application).postDao
-    )
-    val data: LiveData<List<Post>> = repository.get()
+    private val _data = MutableLiveData(FeedModel())
+    val data: LiveData<FeedModel> = _data
 
-    private val edited = MutableLiveData(emptyPost)
+    private val edited = MutableLiveData(empty)
 
-    fun likePost(id: Long) {
-        repository.likePost(id)
+    private val _postCreated = SingleLiveEvent<Unit>()
+    val postCreated: LiveData<Unit>
+        get() = _postCreated
+
+    init {
+        loadPosts()
     }
 
+    fun likePost(id: Long) {
+        thread {
+            try {
+                val updatedPost = repository.likeById(id)
+                _data.postValue(
+                    _data.value?.copy(posts = _data.value?.posts.orEmpty().map { post ->
+                        if (post.id == updatedPost.id) updatedPost else post
+                    })
+                )
+            } catch (e: IOException) {
+                _data.postValue(_data.value?.copy(error = true))
+            }
+        }
+    }
+
+
     fun sharePost(id: Long) {
-        repository.sharePost(id)
+        thread { repository.sharePost(id) }
     }
 
     fun plusView(id: Long) {
-        repository.plusView(id)
+        thread { repository.plusView(id) }
     }
 
     fun removeById(id: Long) {
-        repository.removeById(id)
+        thread {
+            val old = _data.value?.posts.orEmpty()
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                    .filter { it.id != id }
+                )
+            )
+            try {
+                repository.removeById(id)
+            } catch (e: IOException) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+        }
+    }
+
+    fun loadPosts() {
+        thread {
+            _data.postValue(FeedModel(loading = true))
+
+            try {
+               val posts = repository.getAll()
+                FeedModel(posts = posts, empty = posts.isEmpty())
+            } catch (e: Exception) {
+                FeedModel(error = true)
+            }.let(_data::postValue)
+        }
     }
 
     // фукция для сохранения
     fun save() {
         edited.value?.let {
-            repository.save(it)
+            thread {
+                repository.save(it)
+                _postCreated.postValue(Unit)
+            }
         }
-        edited.value = emptyPost
+        edited.value = empty
     }
 
     fun edit(post: Post) {
@@ -65,15 +115,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     //функция изменения контента
-    fun changePostContent(content: String) {
+    fun changeContent(content: String) {
         val text = content.trim()
-        if (edited.value?.text == text) {
+        if (edited.value?.content == text) {
             return
         }
-        edited.value = edited.value?.copy(text = text)
+        edited.value = edited.value?.copy(content = text)
     }
 
     fun cancelEditing() {
-        edited.value = emptyPost
+        edited.value = empty
     }
 }

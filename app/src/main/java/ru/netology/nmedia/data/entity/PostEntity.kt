@@ -4,16 +4,15 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.netology.nmedia.domain.post.Post
 import ru.netology.nmedia.domain.post.attachments.Attachment
-import java.util.Date
 
 @Entity
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val fromId: Long,
-    val date: Date,
+    val author: Long,
+    val date: Long,
     val title: String,
-    val text: String?,
+    val content: String?,
     val friendsOnly: Boolean,
     val comments: Int = 0,
     val likes: Int,
@@ -25,10 +24,10 @@ data class PostEntity(
 ) {
     fun toDto(): Post = Post(
         id = id,
-        fromId = fromId,
+        author = author,
         date = date,
         title = title,
-        text = text,
+        content = content,
         friendsOnly = friendsOnly,
         comments = comments,
         likes = likes,
@@ -43,10 +42,10 @@ data class PostEntity(
         fun fromDto(post: Post): PostEntity = with(post) {
             PostEntity(
                 id,
-                fromId,
+                author,
                 date,
                 title = title.ifBlank { "Нетология" },
-                text,
+                content,
                 friendsOnly,
                 comments,
                 likes,

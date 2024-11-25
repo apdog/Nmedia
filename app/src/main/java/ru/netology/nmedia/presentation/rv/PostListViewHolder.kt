@@ -29,7 +29,7 @@ class PostListViewHolder(
             postCommentsButton.text = post.comments.toString()
             // Присвоение текстовой информации посту
             postTitleTextView.text = post.title
-            postContentTextView.text = post.text
+            postContentTextView.text = post.content
             postDateTextView.text = formatPostDate(post)
             postCommentsButton.text = post.comments.toString()
             // Обновление иконки лайка в зависимости от состояния likedByMe
@@ -107,7 +107,7 @@ class PostListViewHolder(
 
     private fun formatPostDate(post: Post): String {
         val now = Date()
-        val seconds = (now.time - post.date.time) / 1000
+        val seconds = (now.time - post.date) / 1000
         val minutes = seconds / 60
         val hours = minutes / 60
         val days = hours / 24

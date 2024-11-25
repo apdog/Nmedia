@@ -7,16 +7,68 @@
     android:layout_height="match_parent"
     tools:context=".presentation.view.FeedFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/postListRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/postListRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/post_item" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/something_went_wrong"
+        app:layout_constraintBottom_toTopOf="@id/retryButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/post_item"/>
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/retryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/errorMessage" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/errorGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="retryButton, errorMessage" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/posts_is_not_found"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addPostFAB"
@@ -24,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/out_post_right_and_left_margin_20dp"
         android:src="@drawable/ic_add_24"
-        app:layout_constraintBottom_toBottomOf="@+id/postListRecyclerView"
-        app:layout_constraintEnd_toEndOf="@+id/postListRecyclerView" />
+        app:layout_constraintBottom_toBottomOf="@+id/swipeRefreshLayout"
+        app:layout_constraintEnd_toEndOf="@+id/swipeRefreshLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

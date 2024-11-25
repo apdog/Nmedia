@@ -45,4 +45,12 @@
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
     <string name="Name_of_video">Name of video</string>
+    <string name="channel_remote_name">Notifications from the server</string>
+    <string name="channel_remote_description">Notifications from a remote server</string>
+    <string name="notification_user_liked">%1$s liked the post %2$s</string>
+    <string name="unknown_action">Unknown action: %1$s</string>
+    <string name="notification_new_post">%1$s published a new post:</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="retry">Retry</string>
+    <string name="posts_is_not_found">Posts is not found</string>
 </resources>
