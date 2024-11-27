@@ -15,18 +15,20 @@ import kotlin.concurrent.thread
 // дата объект для сохранения
 private val empty = Post(
     id = 0L,
-    author = 0L,
-    date = 0L,
-    title = "",
-    content = null,
-    friendsOnly = false,
-    comments = 0,
-    likes = 0,
+    author = "Нетология",
+    content = "",
+    published = 0L,
     likedByMe = false,
-    reposts = 0,
-    views = 0,
-    isPinned = false,
-    attachments = listOf()
+    likes = 0,
+    attachments = listOf(),
+    title = "",
+    authorAvatar = ""
+//    friendsOnly = false,
+//    comments = 0,
+//    reposts = 0,
+//    views = 0,
+//    isPinned = false,
+
 )
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
@@ -47,65 +49,76 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun likePost(id: Long) {
-        thread {
-            try {
-                val updatedPost = repository.likeById(id)
+        repository.likeById(id, object : PostRepository.PostCallback<Post> {
+            override fun onSuccess(updatedPost: Post) {
                 _data.postValue(
                     _data.value?.copy(posts = _data.value?.posts.orEmpty().map { post ->
                         if (post.id == updatedPost.id) updatedPost else post
                     })
                 )
-            } catch (e: IOException) {
+            }
+
+            override fun onError(error: Throwable) {
                 _data.postValue(_data.value?.copy(error = true))
             }
-        }
+        })
     }
 
 
-    fun sharePost(id: Long) {
-        thread { repository.sharePost(id) }
-    }
-
-    fun plusView(id: Long) {
-        thread { repository.plusView(id) }
-    }
+//    fun sharePost(id: Long) {
+//        thread { repository.sharePost(id) }
+//    }
+//
+//    fun plusView(id: Long) {
+//        thread { repository.plusView(id) }
+//    }
 
     fun removeById(id: Long) {
-        thread {
-            val old = _data.value?.posts.orEmpty()
-            _data.postValue(
-                _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .filter { it.id != id }
-                )
-            )
-            try {
-                repository.removeById(id)
-            } catch (e: IOException) {
-                _data.postValue(_data.value?.copy(posts = old))
+        val old = _data.value?.posts.orEmpty()
+        _data.postValue(
+            _data.value?.copy(posts = _data.value?.posts.orEmpty().filter { it.id != id })
+        )
+        repository.removeById(id, object : PostRepository.PostCallback<Unit> {
+            override fun onSuccess(result: Unit) {
+                // Успешное удаление — пост уже удалён из списка.
             }
-        }
+
+            override fun onError(error: Throwable) {
+                _data.postValue(_data.value?.copy(posts = old, error = true))
+            }
+        })
     }
 
     fun loadPosts() {
-        thread {
-            _data.postValue(FeedModel(loading = true))
 
-            try {
-               val posts = repository.getAll()
-                FeedModel(posts = posts, empty = posts.isEmpty())
-            } catch (e: Exception) {
-                FeedModel(error = true)
-            }.let(_data::postValue)
-        }
+        _data.postValue(FeedModel(loading = true))
+
+        repository.getAllAsync(
+            object : PostRepository.PostCallback<List<Post>> {
+                override fun onSuccess(result: List<Post>) {
+                    _data.postValue(FeedModel(posts = result, empty = result.isEmpty()))
+                }
+
+                override fun onError(error: Throwable) {
+                    _data.postValue(FeedModel(error = true))
+                }
+
+            }
+        )
     }
 
     // фукция для сохранения
     fun save() {
         edited.value?.let {
-            thread {
-                repository.save(it)
-                _postCreated.postValue(Unit)
-            }
+            repository.save(it, object : PostRepository.PostCallback<Post> {
+                override fun onSuccess(result: Post) {
+                    _postCreated.postValue(Unit)
+                }
+
+                override fun onError(error: Throwable) {
+                    _data.postValue(_data.value?.copy(error = true))
+                }
+            })
         }
         edited.value = empty
     }

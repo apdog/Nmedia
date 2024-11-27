@@ -9,33 +9,30 @@ import ru.netology.nmedia.domain.post.attachments.Attachment
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val author: Long,
-    val date: Long,
-    val title: String,
+    val author: String?,
     val content: String?,
-    val friendsOnly: Boolean,
-    val comments: Int = 0,
-    val likes: Int,
-    val likedByMe: Boolean = false,
-    val reposts: Int,
-    val views: Int,
-    val isPinned: Boolean,
-    val attachments: List<Attachment>?
+    val published: Long,
+    val likedByMe: Boolean,
+    val likes: Int = 0,
+    val attachments: List<Attachment>?,
+    val title: String,
+    val authorAvatar: String? = null
 ) {
     fun toDto(): Post = Post(
         id = id,
         author = author,
-        date = date,
-        title = title,
         content = content,
-        friendsOnly = friendsOnly,
-        comments = comments,
-        likes = likes,
+        published = published,
         likedByMe = likedByMe,
-        reposts = reposts,
-        views = views,
-        isPinned = isPinned,
-        attachments = attachments
+        likes = likes,
+        attachments = attachments,
+        title = title,
+        authorAvatar = authorAvatar
+//        friendsOnly = friendsOnly,
+//        comments = comments,
+//        reposts = reposts,
+//        views = views,
+//        isPinned = isPinned,
     )
 
     companion object {
@@ -43,18 +40,18 @@ data class PostEntity(
             PostEntity(
                 id,
                 author,
-                date,
-                title = title.ifBlank { "Нетология" },
                 content,
-                friendsOnly,
-                comments,
-                likes,
+                published,
                 likedByMe,
-                reposts,
-                views,
-                isPinned,
-                attachments
-            )
+                likes,
+                attachments,
+                title = title.ifBlank { "Нетология" },
+//                friendsOnly,
+//                comments,
+//                reposts,
+//                views,
+//                isPinned,
+                        )
         }
     }
 }
