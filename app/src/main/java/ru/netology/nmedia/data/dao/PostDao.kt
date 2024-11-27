@@ -27,19 +27,19 @@ interface PostDao {
     @Query("DELETE FROM PostEntity WHERE id = :id")
     fun removeById(id: Long)
 
-    @Query("""
-        UPDATE PostEntity SET
-        reposts = reposts + 1
-        WHERE id = :id
-    """)
-    fun sharePost(id: Long)
-
-    @Query("""
-        UPDATE PostEntity SET
-        views = views + 1
-        WHERE id = :id
-    """)
-    fun plusView(id: Long)
+//    @Query("""
+//        UPDATE PostEntity SET
+//        reposts = reposts + 1
+//        WHERE id = :id
+//    """)
+//    fun sharePost(id: Long)
+//
+//    @Query("""
+//        UPDATE PostEntity SET
+//        views = views + 1
+//        WHERE id = :id
+//    """)
+//    fun plusView(id: Long)
 
     @Update
     fun update(post: PostEntity)

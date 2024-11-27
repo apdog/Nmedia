@@ -4,6 +4,7 @@ firebaseAdmin = "9.3.0"
 firebaseBom = "33.6.0"
 firebaseMessagingKtx = "24.1.0"
 fragmentKtx = "1.8.5"
+glide = "4.14.2"
 gson = "2.10.1"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
@@ -38,6 +39,7 @@ androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefre
 firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebaseAdmin" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-messaging-ktx = { module = "com.google.firebase:firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

@@ -86,10 +86,10 @@ class FeedFragment : Fragment() {
                 viewModel.likePost(post.id)
             }
 
-            override fun onShare(post: Post) {
-                viewModel.sharePost(post.id)
-                viewModel.plusView(post.id)
-            }
+//            override fun onShare(post: Post) {
+//                viewModel.sharePost(post.id)
+//                viewModel.plusView(post.id)
+//            }
 
             override fun onRemove(post: Post) {
                 viewModel.removeById(post.id)
