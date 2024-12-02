@@ -90,4 +90,7 @@ dependencies {
     //swipe
     implementation(libs.androidx.swiperefreshlayout)
 
+    //Glide
+    implementation(libs.glide)
+
 }

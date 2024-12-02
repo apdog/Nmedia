@@ -36,9 +36,9 @@ class PostDetailsFragment : Fragment() {
                 viewModel.likePost(post.id)
             }
 
-            override fun onShare(post: Post) {
-                viewModel.sharePost(post.id)
-            }
+//            override fun onShare(post: Post) {
+//                viewModel.sharePost(post.id)
+//            }
 
             override fun onEdit(post: Post) {
                 viewModel.edit(post)

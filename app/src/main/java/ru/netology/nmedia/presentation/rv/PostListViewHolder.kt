@@ -2,10 +2,12 @@ package ru.netology.nmedia.presentation.rv
 
 import android.content.Context
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostItemBinding
 import ru.netology.nmedia.domain.post.Post
@@ -23,15 +25,30 @@ class PostListViewHolder(
         with(binding) {
             // Обновление счетчиков лайков, репостов, просмотров и комментариев
             postLikesButton.text = formatCount(post.likes)
-            postCommentsButton.text = formatCount(post.comments)
-            postShareButton.text = formatCount(post.reposts)
-            postViewsButton.text = formatCount(post.views)
-            postCommentsButton.text = post.comments.toString()
+//            postCommentsButton.text = formatCount(post.comments)
+//            postShareButton.text = formatCount(post.reposts)
+//            postViewsButton.text = formatCount(post.views)
+//            postCommentsButton.text = post.comments.toString()
             // Присвоение текстовой информации посту
-            postTitleTextView.text = post.title
+            postTitleTextView.text = post.author
             postContentTextView.text = post.content
             postDateTextView.text = formatPostDate(post)
-            postCommentsButton.text = post.comments.toString()
+            // аватарка
+            // Пример имени ресурса, которое должно быть в post.authorAvatar
+            val resourceName = post.authorAvatar?.substringBeforeLast(".")
+            val resId = avatarImageView.context.resources.getIdentifier(resourceName, "drawable", avatarImageView.context.packageName)
+
+            if (resId != 0) {
+                Glide.with(avatarImageView.context)
+                    .load(resId)
+                    .circleCrop()
+                    .error(R.drawable.ic_launcher_foreground)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .into(avatarImageView)
+            } else {
+                avatarImageView.setImageResource(R.drawable.ic_launcher_foreground)
+            }
+//            postCommentsButton.text = post.comments.toString()
             // Обновление иконки лайка в зависимости от состояния likedByMe
             postLikesButton.isChecked = post.likedByMe
 
@@ -107,7 +124,7 @@ class PostListViewHolder(
 
     private fun formatPostDate(post: Post): String {
         val now = Date()
-        val seconds = (now.time - post.date) / 1000
+        val seconds = (now.time - post.published) / 1000
         val minutes = seconds / 60
         val hours = minutes / 60
         val days = hours / 24
