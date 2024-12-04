@@ -2,8 +2,8 @@ package ru.netology.nmedia.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.netology.nmedia.domain.post.Attachment
 import ru.netology.nmedia.domain.post.Post
-import ru.netology.nmedia.domain.post.attachments.Attachment
 
 @Entity
 data class PostEntity(
@@ -14,7 +14,7 @@ data class PostEntity(
     val published: Long,
     val likedByMe: Boolean,
     val likes: Int = 0,
-    val attachments: List<Attachment>?,
+    val attachment: Attachment?,
     val title: String,
     val authorAvatar: String? = null
 ) {
@@ -25,7 +25,7 @@ data class PostEntity(
         published = published,
         likedByMe = likedByMe,
         likes = likes,
-        attachments = attachments,
+        attachment = attachment,
         title = title,
         authorAvatar = authorAvatar
 //        friendsOnly = friendsOnly,
@@ -44,7 +44,7 @@ data class PostEntity(
                 published,
                 likedByMe,
                 likes,
-                attachments,
+                attachment,
                 title = title.ifBlank { "Нетология" },
 //                friendsOnly,
 //                comments,

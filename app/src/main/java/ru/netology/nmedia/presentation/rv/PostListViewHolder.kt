@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostItemBinding
 import ru.netology.nmedia.domain.post.Post
-import ru.netology.nmedia.domain.post.attachments.VideoAttachment
 import java.util.Date
 
 
@@ -33,16 +32,31 @@ class PostListViewHolder(
             postTitleTextView.text = post.author
             postContentTextView.text = post.content
             postDateTextView.text = formatPostDate(post)
+            videoAndImageContainer.visibility = View.GONE
             // аватарка
             val avatarUrl = post.authorAvatar?.let { "http://10.0.2.2:9999/avatars/$it" }
 
             if (avatarUrl != null) {
-                Glide.with(avatarImageView.context)
+                Glide.with(context)
                     .load(avatarUrl) // Загружаем изображение с сервера по URL
                     .circleCrop()
-                    .error(R.drawable.ic_launcher_foreground)
-                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_cancel_24)
+                    .placeholder(R.drawable.placeholder_img)
                     .into(avatarImageView)
+            } else {
+                avatarImageView.setImageResource(R.drawable.ic_launcher_foreground)
+            }
+
+            // Изображение
+            val imageUrl = post.attachment?.url.let { "http://10.0.2.2:9999/images/$it" }
+
+            if (post.attachment != null) {
+                Glide.with(context)
+                    .load(imageUrl) // Загружаем изображение с сервера по URL
+                    .error(R.drawable.ic_cancel_24)
+                    .placeholder(R.drawable.placeholder_img)
+                    .into(imageThumbnail)
+                videoAndImageContainer.visibility = View.VISIBLE
             } else {
                 avatarImageView.setImageResource(R.drawable.ic_launcher_foreground)
             }
@@ -92,23 +106,23 @@ class PostListViewHolder(
             }
         }
 
-        // Если есть видео
-        val videoAttachment = post.attachments?.find { it is VideoAttachment } as? VideoAttachment
-        if (videoAttachment != null) with(binding) {
-            videoContainer.visibility = View.VISIBLE
-            videoTitle.text = videoAttachment.video.title
-            // Подгружаем изображение
-            videoThumbnail.setImageResource(videoAttachment.video.image)
-            val videoUrl = videoAttachment.video.url
-            videoContainer.setOnClickListener {
-                listener.onVideoClick(videoUrl)
-            }
-            playButton.setOnClickListener {
-                listener.onVideoClick(videoUrl)
-            }
-        } else {
-            binding.videoContainer.visibility = View.GONE
-        }
+//        // Если есть видео
+//        val videoAttachment = post.attachments?.find { it is VideoAttachment } as? VideoAttachment
+//        if (videoAttachment != null) with(binding) {
+//            videoContainer.visibility = View.VISIBLE
+//            videoTitle.text = videoAttachment.video.title
+//            // Подгружаем изображение
+//            videoThumbnail.setImageResource(videoAttachment.video.image)
+//            val videoUrl = videoAttachment.video.url
+//            videoContainer.setOnClickListener {
+//                listener.onVideoClick(videoUrl)
+//            }
+//            playButton.setOnClickListener {
+//                listener.onVideoClick(videoUrl)
+//            }
+//        } else {
+//            binding.videoContainer.visibility = View.GONE
+//        }
     }
 
     private fun formatCount(count: Int): String {
