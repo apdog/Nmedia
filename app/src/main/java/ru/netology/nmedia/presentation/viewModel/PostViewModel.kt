@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.data.PostRepositoryImpl
 import ru.netology.nmedia.domain.PostRepository
+import ru.netology.nmedia.domain.post.Attachment
 import ru.netology.nmedia.domain.post.FeedModel
 import ru.netology.nmedia.domain.post.Post
 import ru.netology.nmedia.utils.SingleLiveEvent
@@ -20,7 +21,7 @@ private val empty = Post(
     published = 0L,
     likedByMe = false,
     likes = 0,
-    attachments = listOf(),
+    attachment = Attachment(url = "", text = "", type = ""),
     title = "",
     authorAvatar = ""
 //    friendsOnly = false,

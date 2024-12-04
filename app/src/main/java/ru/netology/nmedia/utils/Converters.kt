@@ -3,7 +3,7 @@ package ru.netology.nmedia.utils
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import ru.netology.nmedia.domain.post.attachments.Attachment
+import ru.netology.nmedia.domain.post.Attachment
 import java.util.*
 
 object Converters {
@@ -21,15 +21,15 @@ object Converters {
 
     // Конвертер для List<Attachment>
     @TypeConverter
-    fun fromAttachmentsList(value: List<Attachment>?): String? {
+    fun fromAttachment(value: Attachment?): String? {
         return value?.let { Gson().toJson(it) }
     }
 
     @TypeConverter
-    fun toAttachmentsList(value: String?): List<Attachment>? {
+    fun toAttachment(value: String?): Attachment? {
         return value?.let {
-            val listType = object : TypeToken<List<Attachment>>() {}.type
-            Gson().fromJson(it, listType)
+            val type = object : TypeToken<Attachment>() {}.type
+            Gson().fromJson(it, type)
         }
     }
 }
