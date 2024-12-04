@@ -34,13 +34,11 @@ class PostListViewHolder(
             postContentTextView.text = post.content
             postDateTextView.text = formatPostDate(post)
             // аватарка
-            // Пример имени ресурса, которое должно быть в post.authorAvatar
-            val resourceName = post.authorAvatar?.substringBeforeLast(".")
-            val resId = avatarImageView.context.resources.getIdentifier(resourceName, "drawable", avatarImageView.context.packageName)
+            val avatarUrl = post.authorAvatar?.let { "http://10.0.2.2:9999/avatars/$it" }
 
-            if (resId != 0) {
+            if (avatarUrl != null) {
                 Glide.with(avatarImageView.context)
-                    .load(resId)
+                    .load(avatarUrl) // Загружаем изображение с сервера по URL
                     .circleCrop()
                     .error(R.drawable.ic_launcher_foreground)
                     .placeholder(R.drawable.ic_launcher_foreground)
