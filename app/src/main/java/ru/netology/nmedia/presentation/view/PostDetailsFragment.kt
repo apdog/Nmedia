@@ -33,7 +33,7 @@ class PostDetailsFragment : Fragment() {
         viewHolder = PostListViewHolder(binding.postDetails, object : OnInteractionListener {
 
             override fun onLike(post: Post) {
-                viewModel.likePost(post.id)
+                viewModel.toggleLike(post)
             }
 
 //            override fun onShare(post: Post) {

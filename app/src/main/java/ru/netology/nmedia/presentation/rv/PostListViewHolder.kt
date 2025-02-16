@@ -2,7 +2,6 @@ package ru.netology.nmedia.presentation.rv
 
 import android.content.Context
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -39,12 +38,13 @@ class PostListViewHolder(
             if (avatarUrl != null) {
                 Glide.with(context)
                     .load(avatarUrl) // Загружаем изображение с сервера по URL
+                    .timeout(5100)
                     .circleCrop()
                     .error(R.drawable.ic_cancel_24)
                     .placeholder(R.drawable.placeholder_img)
                     .into(avatarImageView)
             } else {
-                avatarImageView.setImageResource(R.drawable.ic_launcher_foreground)
+                avatarImageView.setImageResource(R.drawable.ic_cancel_24)
             }
 
             // Изображение
@@ -53,12 +53,13 @@ class PostListViewHolder(
             if (post.attachment != null) {
                 Glide.with(context)
                     .load(imageUrl) // Загружаем изображение с сервера по URL
+                    .timeout(5100)
                     .error(R.drawable.ic_cancel_24)
                     .placeholder(R.drawable.placeholder_img)
                     .into(imageThumbnail)
                 videoAndImageContainer.visibility = View.VISIBLE
             } else {
-                avatarImageView.setImageResource(R.drawable.ic_launcher_foreground)
+                avatarImageView.setImageResource(R.drawable.ic_cancel_24)
             }
 //            postCommentsButton.text = post.comments.toString()
             // Обновление иконки лайка в зависимости от состояния likedByMe

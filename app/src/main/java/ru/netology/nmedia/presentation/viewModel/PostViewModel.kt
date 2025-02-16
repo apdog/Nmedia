@@ -21,7 +21,7 @@ private val empty = Post(
     published = 0L,
     likedByMe = false,
     likes = 0,
-    attachment = Attachment(url = "", text = "", type = ""),
+    attachment = null,
     title = "",
     authorAvatar = ""
 //    friendsOnly = false,
@@ -49,21 +49,56 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         loadPosts()
     }
 
-    fun likePost(id: Long) {
-        repository.likeById(id, object : PostRepository.PostCallback<Post> {
-            override fun onSuccess(updatedPost: Post) {
-                _data.postValue(
-                    _data.value?.copy(posts = _data.value?.posts.orEmpty().map { post ->
-                        if (post.id == updatedPost.id) updatedPost else post
-                    })
-                )
-            }
-
-            override fun onError(error: Throwable) {
-                _data.postValue(_data.value?.copy(error = true))
-            }
-        })
+    // Пример для метода like/unlike
+    fun toggleLike(post: Post) {
+        if (post.likedByMe) {
+            repository.unlikeById(post.id, object : PostRepository.PostCallback<Post> {
+                override fun onSuccess(updatedPost: Post) {
+                    _data.postValue(
+                        _data.value?.copy(
+                            posts = _data.value?.posts.orEmpty().map { currentPost ->
+                                if (currentPost.id == updatedPost.id) updatedPost else currentPost
+                            },
+                            error = false,
+                            errorMessage = null
+                        )
+                    )
+                }
+                override fun onError(error: Throwable) {
+                    _data.postValue(
+                        _data.value?.copy(
+                            error = true,
+                            errorMessage = "Ошибка снятия лайка: ${error.message}"
+                        )
+                    )
+                }
+            })
+        } else {
+            repository.likeById(post.id, object : PostRepository.PostCallback<Post> {
+                override fun onSuccess(updatedPost: Post) {
+                    _data.postValue(
+                        _data.value?.copy(
+                            posts = _data.value?.posts.orEmpty().map { currentPost ->
+                                if (currentPost.id == updatedPost.id) updatedPost else currentPost
+                            },
+                            error = false,
+                            errorMessage = null
+                        )
+                    )
+                }
+                override fun onError(error: Throwable) {
+                    _data.postValue(
+                        _data.value?.copy(
+                            error = true,
+                            errorMessage = "Ошибка установки лайка: ${error.message}"
+                        )
+                    )
+                }
+            })
+        }
     }
+
+
 
 
 //    fun sharePost(id: Long) {
@@ -91,22 +126,23 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun loadPosts() {
-
         _data.postValue(FeedModel(loading = true))
-
-        repository.getAllAsync(
-            object : PostRepository.PostCallback<List<Post>> {
-                override fun onSuccess(result: List<Post>) {
-                    _data.postValue(FeedModel(posts = result, empty = result.isEmpty()))
-                }
-
-                override fun onError(error: Throwable) {
-                    _data.postValue(FeedModel(error = true))
-                }
-
+        repository.getAllAsync(object : PostRepository.PostCallback<List<Post>> {
+            override fun onSuccess(result: List<Post>) {
+                _data.postValue(FeedModel(posts = result, empty = result.isEmpty()))
             }
-        )
+            override fun onError(error: Throwable) {
+                _data.postValue(
+                    FeedModel(
+                        posts = _data.value?.posts.orEmpty(),
+                        error = true,
+                        errorMessage = "Ошибка загрузки постов: ${error.message}"
+                    )
+                )
+            }
+        })
     }
+
 
     // фукция для сохранения
     fun save() {

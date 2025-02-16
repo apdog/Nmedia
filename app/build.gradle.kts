@@ -21,13 +21,12 @@ android {
 
     buildTypes {
         release {
-            manifestPlaceholders += mapOf()
+            manifestPlaceholders += mapOf("usesCleartextTraffic" to false)
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            manifestPlaceholders["usesCleartextTraffic"] = false
         }
         debug {
             manifestPlaceholders["usesCleartextTraffic"] = true
@@ -86,11 +85,16 @@ dependencies {
 
     //okhttp
     implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     //swipe
     implementation(libs.androidx.swiperefreshlayout)
 
     //Glide
     implementation(libs.glide)
+
+    //Retrofit
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
 
 }
