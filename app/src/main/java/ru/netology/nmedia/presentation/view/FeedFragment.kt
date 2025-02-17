@@ -39,18 +39,21 @@ class FeedFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
             postListAdapter.submitList(state.posts)
+
+            // Отображение ошибки, если flag error равен true
             binding.errorGroup.isVisible = state.error
+            binding.errorMessage.text = state.errorMessage ?: ""
+
             binding.empty.isVisible = state.empty
             binding.progress.isVisible = state.loading && !binding.swipeRefreshLayout.isRefreshing
-
             binding.swipeRefreshLayout.isRefreshing = state.loading && binding.swipeRefreshLayout.isRefreshing
 
-            //прокрутка при добавлении поста
             if (!isEditing) {
                 binding.postListRecyclerView.scrollToPosition(0)
             }
-
         }
+
+
 
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
@@ -83,7 +86,7 @@ class FeedFragment : Fragment() {
             }
 
             override fun onLike(post: Post) {
-                viewModel.likePost(post.id)
+                viewModel.toggleLike(post)
             }
 
 //            override fun onShare(post: Post) {

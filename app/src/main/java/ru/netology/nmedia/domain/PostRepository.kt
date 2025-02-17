@@ -5,6 +5,7 @@ import ru.netology.nmedia.domain.post.Post
 interface PostRepository {
     fun getAllAsync(callback: PostCallback<List<Post>>)
     fun likeById(id: Long,callback: PostCallback<Post>)
+    fun unlikeById(id: Long, callback: PostCallback<Post>)
     fun removeById(id: Long, callback: PostCallback<Unit>)
     fun save(post: Post, callback: PostCallback<Post>)
 //    fun sharePost(id: Long)

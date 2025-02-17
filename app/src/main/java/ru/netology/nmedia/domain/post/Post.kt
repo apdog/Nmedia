@@ -1,7 +1,7 @@
 package ru.netology.nmedia.domain.post
 
 data class Post(
-    val id: Long, // Уникальный номер поста
+    val id: Long = 0, // Уникальный номер поста
     val author: String?, // автор поста
     val content: String?, // Текст поста
     val published: Long, // Дата публикации поста
